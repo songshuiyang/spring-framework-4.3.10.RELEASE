@@ -71,6 +71,8 @@ import org.springframework.web.context.support.StandardServletEnvironment;
  * class which loads its own application context. FrameworkServlet serves
  * as direct base class of Spring's full-fledged {@link DispatcherServlet}.
  *
+ * 主要做一些初始化的工作，将web.xml中配置的参数设置到Servlet中。比如servlet标签的子标签init-param标签中配置的参数。
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see #addRequiredProperty
@@ -149,14 +151,17 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 			logger.debug("Initializing servlet '" + getServletName() + "'");
 		}
 
+		// 构造过程中会使用ServletConfig对象找出web.xml配置文件中的配置参数并设置到ServletConfigPropertyValues内部
 		// Set bean properties from init parameters.
 		PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
 		if (!pvs.isEmpty()) {
 			try {
+				// 使用BeanWrapper构造DispatcherServlet
 				BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(this);
 				ResourceLoader resourceLoader = new ServletContextResourceLoader(getServletContext());
 				bw.registerCustomEditor(Resource.class, new ResourceEditor(resourceLoader, getEnvironment()));
 				initBeanWrapper(bw);
+				// 设置DispatcherServlet属性
 				bw.setPropertyValues(pvs, true);
 			}
 			catch (BeansException ex) {
@@ -167,7 +172,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 			}
 		}
 
-		// Let subclasses do whatever initialization they like.
+		// Let subclasses do whatever initialization they like 让子类去做一些事情，这种在父类定义在子类实现的方式叫做模版方法模式
 		initServletBean();
 
 		if (logger.isDebugEnabled()) {
