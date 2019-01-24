@@ -60,5 +60,6 @@ target
 ##########
 ./build
 ./dist
-
+./out
 /bin/
+/build/
