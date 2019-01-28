@@ -479,6 +479,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
+		// initStrategies方法内部会初始化各个策略接口的实现类。
 		initStrategies(context);
 	}
 
@@ -490,10 +491,13 @@ public class DispatcherServlet extends FrameworkServlet {
 		initMultipartResolver(context);
 		initLocaleResolver(context);
 		initThemeResolver(context);
+		// 请求映射处理初始化
 		initHandlerMappings(context);
 		initHandlerAdapters(context);
+		// 异常处理初始化
 		initHandlerExceptionResolvers(context);
 		initRequestToViewNameTranslator(context);
+		// 视图处理初始化
 		initViewResolvers(context);
 		initFlashMapManager(context);
 	}

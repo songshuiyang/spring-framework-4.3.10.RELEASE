@@ -171,8 +171,8 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 				throw ex;
 			}
 		}
-
-		// Let subclasses do whatever initialization they like 让子类去做一些事情，这种在父类定义在子类实现的方式叫做模版方法模式
+		// 让子类去做一些事情，这种在父类定义在子类实现的方式叫做模版方法模式
+		// Let subclasses do whatever initialization they like
 		initServletBean();
 
 		if (logger.isDebugEnabled()) {
