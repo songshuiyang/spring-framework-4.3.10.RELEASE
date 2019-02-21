@@ -941,7 +941,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			Exception dispatchException = null;
 
 			try {
-				// 检查是否有 Multipart，有则将请求转换为 Multipart 请求
+				// 检查是否是文件上传请求 Multipart，有则将请求转换为 Multipart 请求
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
@@ -970,21 +970,22 @@ public class DispatcherServlet extends FrameworkServlet {
 						return;
 					}
 				}
-
+				// 执行相应拦截器Interceptor的preHandle
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
 
 				// Actually invoke the handler.
-				// 执行实际的处理程序
+				// 执行实际的处理程序，执行Controller里的方法
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
+				// 如果需要异步处理，直接返回
 				if (asyncManager.isConcurrentHandlingStarted()) {
 					return;
 				}
-
+				// 当view为空
 				applyDefaultViewName(processedRequest, mv);
-				// 遍历拦截器，执行它们的 postHandle() 方法
+				// 执行相应拦截器Interceptor的postHandle
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
 			catch (Exception ex) {
@@ -993,9 +994,9 @@ public class DispatcherServlet extends FrameworkServlet {
 			catch (Throwable err) {
 				// As of 4.3, we're processing Errors thrown from handler methods as well,
 				// making them available for @ExceptionHandler methods and other scenarios.
-				// 处理执行结果，是一个 ModelAndView 或 Exception，然后进行渲染
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
+			// 处理返回结果，是一个 ModelAndView 或 Exception，然后进行渲染
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {
@@ -1006,6 +1007,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					new NestedServletException("Handler processing failed", err));
 		}
 		finally {
+			// 判断是否执行异步请求
 			if (asyncManager.isConcurrentHandlingStarted()) {
 				// Instead of postHandle and afterCompletion
 				// 遍历拦截器，执行它们的 afterCompletion() 方法
@@ -1015,6 +1017,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			}
 			else {
 				// Clean up any resources used by a multipart request.
+				// 删除上传请求的资源
 				if (multipartRequestParsed) {
 					cleanupMultipart(processedRequest);
 				}
