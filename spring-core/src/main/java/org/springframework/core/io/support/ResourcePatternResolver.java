@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
+
 /**
  * Strategy interface for resolving a location pattern (for example,
  * an Ant-style path pattern) into Resource objects.
