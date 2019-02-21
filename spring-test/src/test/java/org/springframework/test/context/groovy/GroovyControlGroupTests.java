@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package org.springframework.test.context.groovy;
 
@@ -25,6 +26,7 @@ import org.springframework.tests.sample.beans.Pet;
 
 import static org.junit.Assert.*;
 
+*/
 /**
  * Simple integration test to verify the expected functionality of
  * {@link GenericGroovyApplicationContext}, thereby validating the proper
@@ -37,7 +39,8 @@ import static org.junit.Assert.*;
  *
  * @author Sam Brannen
  * @since 4.1
- */
+ *//*
+
 public class GroovyControlGroupTests {
 
 	@Test
@@ -62,3 +65,4 @@ public class GroovyControlGroupTests {
 	}
 
 }
+*/

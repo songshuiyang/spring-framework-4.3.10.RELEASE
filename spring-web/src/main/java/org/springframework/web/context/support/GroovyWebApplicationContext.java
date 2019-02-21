@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package org.springframework.web.context.support;
 
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
+*/
 /**
  * {@link org.springframework.web.context.WebApplicationContext} implementation which takes
  * its configuration from Groovy bean definition scripts and/or XML files, as understood by
@@ -65,16 +67,23 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
  * @see org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader
  * @see org.springframework.web.context.ContextLoader#initWebApplicationContext
  * @see org.springframework.web.servlet.FrameworkServlet#initWebApplicationContext
- */
+ *//*
+
 public class GroovyWebApplicationContext extends AbstractRefreshableWebApplicationContext implements GroovyObject {
 
-	/** Default config location for the root context */
+	*/
+/** Default config location for the root context *//*
+
 	public static final String DEFAULT_CONFIG_LOCATION = "/WEB-INF/applicationContext.groovy";
 
-	/** Default prefix for building a config location for a namespace */
+	*/
+/** Default prefix for building a config location for a namespace *//*
+
 	public static final String DEFAULT_CONFIG_LOCATION_PREFIX = "/WEB-INF/";
 
-	/** Default suffix for building a config location for a namespace */
+	*/
+/** Default suffix for building a config location for a namespace *//*
+
 	public static final String DEFAULT_CONFIG_LOCATION_SUFFIX = ".groovy";
 
 
@@ -83,12 +92,14 @@ public class GroovyWebApplicationContext extends AbstractRefreshableWebApplicati
 	private MetaClass metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
 
 
-	/**
+	*/
+/**
 	 * Loads the bean definitions via an GroovyBeanDefinitionReader.
 	 * @see org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader
 	 * @see #initBeanDefinitionReader
 	 * @see #loadBeanDefinitions
-	 */
+	 *//*
+
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
 		// Create a new XmlBeanDefinitionReader for the given BeanFactory.
@@ -105,16 +116,19 @@ public class GroovyWebApplicationContext extends AbstractRefreshableWebApplicati
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 
-	/**
+	*/
+/**
 	 * Initialize the bean definition reader used for loading the bean
 	 * definitions of this context. Default implementation is empty.
 	 * <p>Can be overridden in subclasses.
 	 * @param beanDefinitionReader the bean definition reader used by this context
-	 */
+	 *//*
+
 	protected void initBeanDefinitionReader(GroovyBeanDefinitionReader beanDefinitionReader) {
 	}
 
-	/**
+	*/
+/**
 	 * Load the bean definitions with the given GroovyBeanDefinitionReader.
 	 * <p>The lifecycle of the bean factory is handled by the refreshBeanFactory method;
 	 * therefore this method is just supposed to load and/or register bean definitions.
@@ -125,7 +139,8 @@ public class GroovyWebApplicationContext extends AbstractRefreshableWebApplicati
 	 * @see #getConfigLocations
 	 * @see #getResources
 	 * @see #getResourcePatternResolver
-	 */
+	 *//*
+
 	protected void loadBeanDefinitions(GroovyBeanDefinitionReader reader) throws IOException {
 		String[] configLocations = getConfigLocations();
 		if (configLocations != null) {
@@ -135,11 +150,13 @@ public class GroovyWebApplicationContext extends AbstractRefreshableWebApplicati
 		}
 	}
 
-	/**
+	*/
+/**
 	 * The default location for the root context is "/WEB-INF/applicationContext.groovy",
 	 * and "/WEB-INF/test-servlet.groovy" for a context with the namespace "test-servlet"
 	 * (like for a DispatcherServlet instance with the servlet-name "test").
-	 */
+	 *//*
+
 	@Override
 	protected String[] getDefaultConfigLocations() {
 		if (getNamespace() != null) {
@@ -180,3 +197,4 @@ public class GroovyWebApplicationContext extends AbstractRefreshableWebApplicati
 	}
 
 }
+*/

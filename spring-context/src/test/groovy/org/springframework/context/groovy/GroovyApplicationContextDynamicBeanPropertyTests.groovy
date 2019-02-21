@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package org.springframework.context.groovy
 
@@ -23,10 +24,12 @@ import org.springframework.context.support.GenericGroovyApplicationContext
 
 import static groovy.test.GroovyAssert.*
 
+*/
 /**
  * @author Jeff Brown
  * @author Sam Brannen
- */
+ *//*
+
 class GroovyApplicationContextDynamicBeanPropertyTests {
 
 	@Test
@@ -52,3 +55,4 @@ class GroovyApplicationContextDynamicBeanPropertyTests {
 	}
 
 }
+*/

@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package org.springframework.cache.aspectj;
 
@@ -23,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
 
+*/
 /**
  * {@code @Configuration} class that registers the Spring infrastructure beans necessary
  * to enable AspectJ-based annotation-driven cache management for standard JSR-107
@@ -32,7 +34,8 @@ import org.springframework.context.annotation.Role;
  * @since 4.1
  * @see org.springframework.cache.annotation.EnableCaching
  * @see org.springframework.cache.annotation.CachingConfigurationSelector
- */
+ *//*
+
 @Configuration
 public class AspectJJCacheConfiguration extends AbstractJCacheConfiguration {
 
@@ -45,3 +48,4 @@ public class AspectJJCacheConfiguration extends AbstractJCacheConfiguration {
 	}
 
 }
+*/
