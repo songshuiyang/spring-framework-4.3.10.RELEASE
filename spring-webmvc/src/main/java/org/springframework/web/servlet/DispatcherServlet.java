@@ -488,17 +488,17 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
-		// 上传组件
+		// 上传组件组件初始化
 		initMultipartResolver(context);
 		initLocaleResolver(context);
 		initThemeResolver(context);
-		// 请求映射处理初始化
+		// 请求映射处理组件初始化
 		initHandlerMappings(context);
 		initHandlerAdapters(context);
-		// 异常处理初始化
+		// 异常处理组件初始化
 		initHandlerExceptionResolvers(context);
 		initRequestToViewNameTranslator(context);
-		// 视图处理初始化
+		// 视图处理组件初始化
 		initViewResolvers(context);
 		initFlashMapManager(context);
 	}
@@ -579,6 +579,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		if (this.detectAllHandlerMappings) {
 			// Find all HandlerMappings in the ApplicationContext, including ancestor contexts.
+            // 在ApplicationContext bean中找到所有HandlerMappings， beansOfTypeIncludingAncestors 返回给定类型或子类型的所有bean
 			Map<String, HandlerMapping> matchingBeans =
 					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false);
 			if (!matchingBeans.isEmpty()) {

@@ -276,6 +276,7 @@ public abstract class BeanFactoryUtils {
 	}
 
 	/**
+	 * 返回给定类型或子类型的所有bean
 	 * Return all beans of the given type or subtypes, also picking up beans defined in
 	 * ancestor bean factories if the current bean factory is a HierarchicalBeanFactory.
 	 * The returned Map will only contain beans of this type.
