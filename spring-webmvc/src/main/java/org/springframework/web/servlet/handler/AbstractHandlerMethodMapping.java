@@ -45,6 +45,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 
 /**
+ * 将Method作为Handler来使用的，是我们使用最多的一种Handler
  * Abstract base class for {@link HandlerMapping} implementations that define
  * a mapping between a request and a {@link HandlerMethod}.
  *
@@ -194,6 +195,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		if (logger.isDebugEnabled()) {
 			logger.debug("Looking for request mappings in application context: " + getApplicationContext());
 		}
+		// 首先拿到容器的所有的bean
 		String[] beanNames = (this.detectHandlerMethodsInAncestorContexts ?
 				BeanFactoryUtils.beanNamesForTypeIncludingAncestors(getApplicationContext(), Object.class) :
 				getApplicationContext().getBeanNamesForType(Object.class));
@@ -211,10 +213,12 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 					}
 				}
 				if (beanType != null && isHandler(beanType)) {
+					// 负责将Handler保存到Map里
 					detectHandlerMethods(beanName);
 				}
 			}
 		}
+		// 对Handler进行一些初始化，是一个模板方法
 		handlerMethodsInitialized(getHandlerMethods());
 	}
 
@@ -223,6 +227,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @param handler the bean name of a handler or a handler instance
 	 */
 	protected void detectHandlerMethods(final Object handler) {
+		// 获取Handler的类型
 		Class<?> handlerType = (handler instanceof String ?
 				getApplicationContext().getType((String) handler) : handler.getClass());
 		final Class<?> userType = ClassUtils.getUserClass(handlerType);
@@ -305,6 +310,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 */
 	@Override
 	protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
+		// 获取请求url localhost:8080/pub/account/list >>> /pub/account/list
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 		if (logger.isDebugEnabled()) {
 			logger.debug("Looking up handler method for path " + lookupPath);

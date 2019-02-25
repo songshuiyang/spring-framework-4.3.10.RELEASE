@@ -31,6 +31,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.HandlerExecutionChain;
 
 /**
+ * 实现了具体用url从Map中获取Handler的过程
  * Abstract base class for URL-mapped {@link org.springframework.web.servlet.HandlerMapping}
  * implementations. Provides infrastructure for mapping handlers to URLs and configurable
  * URL lookup. For information on the latter, see "alwaysUseFullPath" property.

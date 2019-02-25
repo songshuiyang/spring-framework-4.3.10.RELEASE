@@ -165,6 +165,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 
 	/**
+	 * 检查bean所在的类是否有Controller注解及RequestMapping注解
 	 * {@inheritDoc}
 	 * Expects a handler to have a type-level @{@link Controller} annotation.
 	 */
