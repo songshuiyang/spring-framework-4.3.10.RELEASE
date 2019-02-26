@@ -17,6 +17,8 @@
 package org.springframework.beans.factory;
 
 /**
+ * InitializingBean接口为bean提供了初始化方法的方式，它只包括afterPropertiesSet方法，凡是继承该接口的类，
+ * 在初始化bean的时候都会执行该方法。
  * Interface to be implemented by beans that need to react once all their
  * properties have been set by a BeanFactory: for example, to perform custom
  * initialization, or merely to check that all mandatory properties have been set.

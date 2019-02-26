@@ -601,6 +601,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// Ensure we have at least one HandlerMapping, by registering
 		// a default HandlerMapping if no other mappings are found.
 		if (this.handlerMappings == null) {
+			// 在这里将设置
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isDebugEnabled()) {
 				logger.debug("No HandlerMappings found in servlet '" + getServletName() + "': using default");
@@ -1172,13 +1173,16 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * @return the HandlerExecutionChain, or {@code null} if no handler could be found
 	 */
 	protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
+		// 循环handlerMappings eg: RequestMappingHandlerMapping、SimpleUrlHandlerMapping、BeanNameUrlHandlerMapping
 		for (HandlerMapping hm : this.handlerMappings) {
 			if (logger.isTraceEnabled()) {
 				logger.trace(
 						"Testing handler map [" + hm + "] in DispatcherServlet with name '" + getServletName() + "'");
 			}
+			// 遍历HandlerMapping实现类的找到对应的 HandlerExecutionChain
 			HandlerExecutionChain handler = hm.getHandler(request);
 			if (handler != null) {
+				// 注意这里是找到第一个就直接返回
 				return handler;
 			}
 		}

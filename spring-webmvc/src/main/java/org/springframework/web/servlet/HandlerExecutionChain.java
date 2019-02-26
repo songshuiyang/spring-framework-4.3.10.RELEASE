@@ -28,6 +28,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * 封装了处理器handler及handler拦截器
  * Handler execution chain, consisting of handler object and any handler interceptors.
  * Returned by HandlerMapping's {@link HandlerMapping#getHandler} method.
  *
@@ -43,11 +44,11 @@ public class HandlerExecutionChain {
 	 */
 	private final Object handler;
 	/**
-	 *
+	 * 数组？
 	 */
 	private HandlerInterceptor[] interceptors;
 	/**
-	 *
+	 * 集合？
 	 */
 	private List<HandlerInterceptor> interceptorList;
 	/**

@@ -47,6 +47,7 @@ import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 import org.springframework.web.servlet.mvc.condition.NameValueExpression;
 import org.springframework.web.util.WebUtils;
 
+
 /**
  * Abstract base class for classes for which {@link RequestMappingInfo} defines
  * the mapping between a request and a handler method.
@@ -190,7 +191,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 	 */
 	@Override
 	protected HandlerMethod handleNoMatch(Set<RequestMappingInfo> infos, String lookupPath,
-			HttpServletRequest request) throws ServletException {
+										  HttpServletRequest request) throws ServletException {
 
 		PartialMatchHelper helper = new PartialMatchHelper(infos, request);
 
