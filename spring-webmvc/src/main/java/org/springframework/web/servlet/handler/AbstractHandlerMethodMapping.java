@@ -338,6 +338,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			return (handlerMethod != null ? handlerMethod.createWithResolvedBean() : null);
 		}
 		finally {
+			// mappingRegistry解锁
 			this.mappingRegistry.releaseReadLock();
 		}
 	}
