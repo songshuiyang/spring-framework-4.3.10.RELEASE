@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Handler 处理适配器, 适配不同的 Handler
+ *
  * MVC framework SPI, allowing parameterization of the core MVC workflow.
  *
  * <p>Interface that must be implemented for each handler type to handle a request.
@@ -48,6 +50,8 @@ import javax.servlet.http.HttpServletResponse;
 public interface HandlerAdapter {
 
 	/**
+	 * 检测 HandlerAdapter 是否支持这个 handler
+	 *
 	 * Given a handler instance, return whether or not this {@code HandlerAdapter}
 	 * can support it. Typical HandlerAdapters will base the decision on the handler
 	 * type. HandlerAdapters will usually only support one handler type each.
@@ -61,6 +65,8 @@ public interface HandlerAdapter {
 	boolean supports(Object handler);
 
 	/**
+	 * 处理 HttpServletRequest 的入口方法
+	 *
 	 * Use the given handler to handle this request.
 	 * The workflow that is required may vary widely.
 	 * @param request current HTTP request
@@ -75,6 +81,8 @@ public interface HandlerAdapter {
 	ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception;
 
 	/**
+	 *  获取Http 请求中的lastModifiedTime
+	 *
 	 * Same contract as for HttpServlet's {@code getLastModified} method.
 	 * Can simply return -1 if there's no support in the handler class.
 	 * @param request current HTTP request

@@ -494,6 +494,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		initThemeResolver(context);
 		// 请求映射处理组件初始化
 		initHandlerMappings(context);
+		// 处理适配器组建初始化
 		initHandlerAdapters(context);
 		// 异常处理组件初始化
 		initHandlerExceptionResolvers(context);
