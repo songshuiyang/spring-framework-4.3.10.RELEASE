@@ -118,12 +118,15 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	private List<HandlerMethodArgumentResolver> customArgumentResolvers;
 
+	// 用于给处理器方法和注释了@ModelAttribute的方法设置参数
 	private HandlerMethodArgumentResolverComposite argumentResolvers;
 
+	// 用于添加了@initBinder的方法设置参数
 	private HandlerMethodArgumentResolverComposite initBinderArgumentResolvers;
 
 	private List<HandlerMethodReturnValueHandler> customReturnValueHandlers;
 
+	// 用于将处理器的返回值处理为ModelAndView类型
 	private HandlerMethodReturnValueHandlerComposite returnValueHandlers;
 
 	private List<ModelAndViewResolver> modelAndViewResolvers;
@@ -334,7 +337,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	 * request before it is read and converted for {@code @RequestBody} and
 	 * {@code HttpEntity} method arguments.
 	 */
-	public void setRequestBodyAdvice(List<RequestBodyAdvice> requestBodyAdvice) {
+	public void setRequestBodyAdvice(List<org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice> requestBodyAdvice) {
 		if (requestBodyAdvice != null) {
 			this.requestResponseBodyAdvice.addAll(requestBodyAdvice);
 		}
@@ -345,7 +348,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	 * response before {@code @ResponseBody} or {@code ResponseEntity} return
 	 * values are written to the response body.
 	 */
-	public void setResponseBodyAdvice(List<ResponseBodyAdvice<?>> responseBodyAdvice) {
+	public void setResponseBodyAdvice(List<org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice<?>> responseBodyAdvice) {
 		if (responseBodyAdvice != null) {
 			this.requestResponseBodyAdvice.addAll(responseBodyAdvice);
 		}
@@ -554,13 +557,13 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 					logger.info("Detected @InitBinder methods in " + bean);
 				}
 			}
-			if (RequestBodyAdvice.class.isAssignableFrom(bean.getBeanType())) {
+			if (org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice.class.isAssignableFrom(bean.getBeanType())) {
 				requestResponseBodyAdviceBeans.add(bean);
 				if (logger.isInfoEnabled()) {
 					logger.info("Detected RequestBodyAdvice bean in " + bean);
 				}
 			}
-			if (ResponseBodyAdvice.class.isAssignableFrom(bean.getBeanType())) {
+			if (org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice.class.isAssignableFrom(bean.getBeanType())) {
 				requestResponseBodyAdviceBeans.add(bean);
 				if (logger.isInfoEnabled()) {
 					logger.info("Detected ResponseBodyAdvice bean in " + bean);
@@ -583,30 +586,30 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		// Annotation-based argument resolution
 		resolvers.add(new RequestParamMethodArgumentResolver(getBeanFactory(), false));
 		resolvers.add(new RequestParamMapMethodArgumentResolver());
-		resolvers.add(new PathVariableMethodArgumentResolver());
-		resolvers.add(new PathVariableMapMethodArgumentResolver());
-		resolvers.add(new MatrixVariableMethodArgumentResolver());
-		resolvers.add(new MatrixVariableMapMethodArgumentResolver());
-		resolvers.add(new ServletModelAttributeMethodProcessor(false));
-		resolvers.add(new RequestResponseBodyMethodProcessor(getMessageConverters(), this.requestResponseBodyAdvice));
-		resolvers.add(new RequestPartMethodArgumentResolver(getMessageConverters(), this.requestResponseBodyAdvice));
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.PathVariableMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.PathVariableMapMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.MatrixVariableMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.MatrixVariableMapMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor(false));
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor(getMessageConverters(), this.requestResponseBodyAdvice));
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.RequestPartMethodArgumentResolver(getMessageConverters(), this.requestResponseBodyAdvice));
 		resolvers.add(new RequestHeaderMethodArgumentResolver(getBeanFactory()));
 		resolvers.add(new RequestHeaderMapMethodArgumentResolver());
-		resolvers.add(new ServletCookieValueMethodArgumentResolver(getBeanFactory()));
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.ServletCookieValueMethodArgumentResolver(getBeanFactory()));
 		resolvers.add(new ExpressionValueMethodArgumentResolver(getBeanFactory()));
-		resolvers.add(new SessionAttributeMethodArgumentResolver());
-		resolvers.add(new RequestAttributeMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.SessionAttributeMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.RequestAttributeMethodArgumentResolver());
 
 		// Type-based argument resolution
-		resolvers.add(new ServletRequestMethodArgumentResolver());
-		resolvers.add(new ServletResponseMethodArgumentResolver());
-		resolvers.add(new HttpEntityMethodProcessor(getMessageConverters(), this.requestResponseBodyAdvice));
-		resolvers.add(new RedirectAttributesMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.ServletRequestMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.ServletResponseMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor(getMessageConverters(), this.requestResponseBodyAdvice));
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.RedirectAttributesMethodArgumentResolver());
 		resolvers.add(new ModelMethodProcessor());
 		resolvers.add(new MapMethodProcessor());
 		resolvers.add(new ErrorsMethodArgumentResolver());
 		resolvers.add(new SessionStatusMethodArgumentResolver());
-		resolvers.add(new UriComponentsBuilderMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.UriComponentsBuilderMethodArgumentResolver());
 
 		// Custom arguments
 		if (getCustomArgumentResolvers() != null) {
@@ -615,7 +618,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 		// Catch-all
 		resolvers.add(new RequestParamMethodArgumentResolver(getBeanFactory(), true));
-		resolvers.add(new ServletModelAttributeMethodProcessor(true));
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor(true));
 
 		return resolvers;
 	}
@@ -630,17 +633,17 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		// Annotation-based argument resolution
 		resolvers.add(new RequestParamMethodArgumentResolver(getBeanFactory(), false));
 		resolvers.add(new RequestParamMapMethodArgumentResolver());
-		resolvers.add(new PathVariableMethodArgumentResolver());
-		resolvers.add(new PathVariableMapMethodArgumentResolver());
-		resolvers.add(new MatrixVariableMethodArgumentResolver());
-		resolvers.add(new MatrixVariableMapMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.PathVariableMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.PathVariableMapMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.MatrixVariableMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.MatrixVariableMapMethodArgumentResolver());
 		resolvers.add(new ExpressionValueMethodArgumentResolver(getBeanFactory()));
-		resolvers.add(new SessionAttributeMethodArgumentResolver());
-		resolvers.add(new RequestAttributeMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.SessionAttributeMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.RequestAttributeMethodArgumentResolver());
 
 		// Type-based argument resolution
-		resolvers.add(new ServletRequestMethodArgumentResolver());
-		resolvers.add(new ServletResponseMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.ServletRequestMethodArgumentResolver());
+		resolvers.add(new org.springframework.web.servlet.mvc.method.annotation.ServletResponseMethodArgumentResolver());
 
 		// Custom arguments
 		if (getCustomArgumentResolvers() != null) {
@@ -661,25 +664,25 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		List<HandlerMethodReturnValueHandler> handlers = new ArrayList<HandlerMethodReturnValueHandler>();
 
 		// Single-purpose return value types
-		handlers.add(new ModelAndViewMethodReturnValueHandler());
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.ModelAndViewMethodReturnValueHandler());
 		handlers.add(new ModelMethodProcessor());
-		handlers.add(new ViewMethodReturnValueHandler());
-		handlers.add(new ResponseBodyEmitterReturnValueHandler(getMessageConverters()));
-		handlers.add(new StreamingResponseBodyReturnValueHandler());
-		handlers.add(new HttpEntityMethodProcessor(getMessageConverters(),
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.ViewMethodReturnValueHandler());
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler(getMessageConverters()));
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBodyReturnValueHandler());
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor(getMessageConverters(),
 				this.contentNegotiationManager, this.requestResponseBodyAdvice));
-		handlers.add(new HttpHeadersReturnValueHandler());
-		handlers.add(new CallableMethodReturnValueHandler());
-		handlers.add(new DeferredResultMethodReturnValueHandler());
-		handlers.add(new AsyncTaskMethodReturnValueHandler(this.beanFactory));
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.HttpHeadersReturnValueHandler());
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.CallableMethodReturnValueHandler());
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.DeferredResultMethodReturnValueHandler());
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.AsyncTaskMethodReturnValueHandler(this.beanFactory));
 
 		// Annotation-based return value types
 		handlers.add(new ModelAttributeMethodProcessor(false));
-		handlers.add(new RequestResponseBodyMethodProcessor(getMessageConverters(),
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor(getMessageConverters(),
 				this.contentNegotiationManager, this.requestResponseBodyAdvice));
 
 		// Multi-purpose return value types
-		handlers.add(new ViewNameMethodReturnValueHandler());
+		handlers.add(new org.springframework.web.servlet.mvc.method.annotation.ViewNameMethodReturnValueHandler());
 		handlers.add(new MapMethodProcessor());
 
 		// Custom return value types
@@ -689,7 +692,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 		// Catch-all
 		if (!CollectionUtils.isEmpty(getModelAndViewResolvers())) {
-			handlers.add(new ModelAndViewResolverMethodReturnValueHandler(getModelAndViewResolvers()));
+			handlers.add(new org.springframework.web.servlet.mvc.method.annotation.ModelAndViewResolverMethodReturnValueHandler(getModelAndViewResolvers()));
 		}
 		else {
 			handlers.add(new ModelAttributeMethodProcessor(true));
@@ -734,6 +737,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			}
 		}
 		else {
+			// 具体执行请求的处理
 			// No synchronization on session demanded at all...
 			mav = invokeHandlerMethod(request, response, handlerMethod);
 		}
@@ -794,7 +798,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);
 			ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);
 
-			ServletInvocableHandlerMethod invocableMethod = createInvocableHandlerMethod(handlerMethod);
+			org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod invocableMethod = createInvocableHandlerMethod(handlerMethod);
 			invocableMethod.setHandlerMethodArgumentResolvers(this.argumentResolvers);
 			invocableMethod.setHandlerMethodReturnValueHandlers(this.returnValueHandlers);
 			invocableMethod.setDataBinderFactory(binderFactory);
@@ -842,8 +846,8 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	 * @return the corresponding {@link ServletInvocableHandlerMethod} (or custom subclass thereof)
 	 * @since 4.2
 	 */
-	protected ServletInvocableHandlerMethod createInvocableHandlerMethod(HandlerMethod handlerMethod) {
-		return new ServletInvocableHandlerMethod(handlerMethod);
+	protected org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod createInvocableHandlerMethod(HandlerMethod handlerMethod) {
+		return new org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod(handlerMethod);
 	}
 
 	private ModelFactory getModelFactory(HandlerMethod handlerMethod, WebDataBinderFactory binderFactory) {
@@ -922,7 +926,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	protected InitBinderDataBinderFactory createDataBinderFactory(List<InvocableHandlerMethod> binderMethods)
 			throws Exception {
 
-		return new ServletRequestDataBinderFactory(binderMethods, getWebBindingInitializer());
+		return new org.springframework.web.servlet.mvc.method.annotation.ServletRequestDataBinderFactory(binderMethods, getWebBindingInitializer());
 	}
 
 	private ModelAndView getModelAndView(ModelAndViewContainer mavContainer,
