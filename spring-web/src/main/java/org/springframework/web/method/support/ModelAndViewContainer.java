@@ -49,8 +49,10 @@ public class ModelAndViewContainer {
 
 	private boolean ignoreDefaultModelOnRedirect = false;
 
+	// 视图，可以是实际视图也可以是String类型的逻辑视图
 	private Object view;
 
+	// 默认使用的Model
 	private final ModelMap defaultModel = new BindingAwareModelMap();
 
 	private ModelMap redirectModel;

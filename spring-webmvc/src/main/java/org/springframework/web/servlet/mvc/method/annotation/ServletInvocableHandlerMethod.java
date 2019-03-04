@@ -38,6 +38,8 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.util.NestedServletException;
 
 /**
+ * 在InvocableHandlerMethod 的基础上添加了 1： 对ResponseStatus注释的支持 2： 对返回值的处理 3： 对异步处理结果的处理
+ *
  * Extends {@link InvocableHandlerMethod} with the ability to handle return
  * values through a registered {@link HandlerMethodReturnValueHandler} and
  * also supports setting the response status based on a method-level
@@ -57,6 +59,9 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 
 	private static final Method CALLABLE_METHOD = ClassUtils.getMethod(Callable.class, "call");
 
+	/**
+	 * 对返回值的处理
+	 */
 	private HandlerMethodReturnValueHandlerComposite returnValueHandlers;
 
 

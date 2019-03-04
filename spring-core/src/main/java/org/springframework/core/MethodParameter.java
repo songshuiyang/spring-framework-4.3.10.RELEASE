@@ -61,30 +61,55 @@ public class MethodParameter {
 		javaUtilOptionalClass = clazz;
 	}
 
-
+	/**
+	 * 参数所在的方法
+	 */
 	private final Method method;
-
+	/**
+	 * 参数对象的构造方法
+	 */
 	private final Constructor<?> constructor;
-
+	/**
+	 * 参数的序号
+	 */
 	private final int parameterIndex;
-
+	/**
+	 * 嵌套级别
+	 */
 	private int nestingLevel = 1;
 
+	/**
+	 * 保存每层嵌套参数的序数
+	 */
 	/** Map from Integer level to Integer type index */
 	Map<Integer, Integer> typeIndexesPerLevel;
-
+	/**
+	 * 参数方法所在的类
+	 */
 	private volatile Class<?> containingClass;
-
+	/**
+	 * 参数的类型
+	 */
 	private volatile Class<?> parameterType;
-
+	/**
+	 * 参数的类型Type形式表示
+	 */
 	private volatile Type genericParameterType;
-
+	/**
+	 * 参数的注解
+	 */
 	private volatile Annotation[] parameterAnnotations;
-
+	/**
+	 * 参数名称查找器
+	 */
 	private volatile ParameterNameDiscoverer parameterNameDiscoverer;
-
+	/**
+	 * 参数名称
+	 */
 	private volatile String parameterName;
-
+	/**
+	 *
+	 */
 	private volatile MethodParameter nestedMethodParameter;
 
 

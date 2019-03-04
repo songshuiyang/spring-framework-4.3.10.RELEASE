@@ -795,15 +795,19 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 		ServletWebRequest webRequest = new ServletWebRequest(request, response);
 		try {
+			// 创建WebDataBinder，WebDataBinder用于参数绑定，将符合条件的注释了@InitBinder的方法找出来
 			WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);
+			// 用来处理Model，在处理器具体处理之前对Model进行初始化，在处理完请求之后对Model参数进行更新
 			ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);
 
+			// 继承自HandlerMethod，实际请求的处理就是通过它来执行的，包括参数绑定，请求处理，以及返回值处理都是在它里面完成
 			org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod invocableMethod = createInvocableHandlerMethod(handlerMethod);
 			invocableMethod.setHandlerMethodArgumentResolvers(this.argumentResolvers);
 			invocableMethod.setHandlerMethodReturnValueHandlers(this.returnValueHandlers);
 			invocableMethod.setDataBinderFactory(binderFactory);
 			invocableMethod.setParameterNameDiscoverer(this.parameterNameDiscoverer);
 
+			// ModelAndViewContainer承载着整个请求过程中数据的传递工作
 			ModelAndViewContainer mavContainer = new ModelAndViewContainer();
 			mavContainer.addAllAttributes(RequestContextUtils.getInputFlashMap(request));
 			modelFactory.initModel(webRequest, mavContainer, invocableMethod);

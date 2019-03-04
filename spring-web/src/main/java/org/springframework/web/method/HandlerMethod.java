@@ -65,6 +65,9 @@ public class HandlerMethod {
 
 	private final Method bridgedMethod;
 
+	/**
+	 * 方法的参数
+	 */
 	private final MethodParameter[] parameters;
 
 	private HttpStatus responseStatus;

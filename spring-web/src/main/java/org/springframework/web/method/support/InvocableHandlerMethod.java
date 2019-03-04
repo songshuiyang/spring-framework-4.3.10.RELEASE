@@ -32,6 +32,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.HandlerMethod;
 
 /**
+ * 在 HandlerMethod类的基础上添加了调用的功能
  * Provides a method for invoking the handler method for a given request after resolving its
  * method argument values through registered {@link HandlerMethodArgumentResolver}s.
  *
@@ -47,10 +48,19 @@ import org.springframework.web.method.HandlerMethod;
  */
 public class InvocableHandlerMethod extends HandlerMethod {
 
+	/**
+	 * 用于参数解析器ArgumentResolver
+	 */
 	private WebDataBinderFactory dataBinderFactory;
 
-	private HandlerMethodArgumentResolverComposite argumentResolvers = new HandlerMethodArgumentResolverComposite();
+	/**
+	 * 解析参数
+	 */
+	private org.springframework.web.method.support.HandlerMethodArgumentResolverComposite argumentResolvers = new org.springframework.web.method.support.HandlerMethodArgumentResolverComposite();
 
+	/**
+	 * 用来获取参数名
+	 */
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
 
@@ -94,7 +104,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	/**
 	 * Set {@link HandlerMethodArgumentResolver}s to use to use for resolving method argument values.
 	 */
-	public void setHandlerMethodArgumentResolvers(HandlerMethodArgumentResolverComposite argumentResolvers) {
+	public void setHandlerMethodArgumentResolvers(org.springframework.web.method.support.HandlerMethodArgumentResolverComposite argumentResolvers) {
 		this.argumentResolvers = argumentResolvers;
 	}
 
@@ -122,7 +132,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	 * @exception Exception raised if no suitable argument resolver can be found,
 	 * or if the method raised an exception
 	 */
-	public Object invokeForRequest(NativeWebRequest request, ModelAndViewContainer mavContainer,
+	public Object invokeForRequest(NativeWebRequest request, org.springframework.web.method.support.ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
 
 		Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
@@ -140,21 +150,28 @@ public class InvocableHandlerMethod extends HandlerMethod {
 
 	/**
 	 * Get the method argument values for the current request.
+	 * 两种解析形式 1： providedArgs 2：argumentResolvers 在RequestMappingHandlerAdapter中只有argumentResolvers解析
+	 *
 	 */
-	private Object[] getMethodArgumentValues(NativeWebRequest request, ModelAndViewContainer mavContainer,
+	private Object[] getMethodArgumentValues(NativeWebRequest request, org.springframework.web.method.support.ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
-
+		// 获取方法的参数，在HanderMethod中
 		MethodParameter[] parameters = getMethodParameters();
+		// 用于保存解析出参数的值
 		Object[] args = new Object[parameters.length];
+		// 遍历每一个参数进行解析
 		for (int i = 0; i < parameters.length; i++) {
 			MethodParameter parameter = parameters[i];
+			// 给Parameter设置参数名解析器
 			parameter.initParameterNameDiscovery(this.parameterNameDiscoverer);
+			// 如果相应类型的参数已经在providedArgs中提供了，则直接设置到parameter
 			args[i] = resolveProvidedArgument(parameter, providedArgs);
 			if (args[i] != null) {
 				continue;
 			}
 			if (this.argumentResolvers.supportsParameter(parameter)) {
 				try {
+					// 使用argumentResolvers解析参数
 					args[i] = this.argumentResolvers.resolveArgument(
 							parameter, mavContainer, request, this.dataBinderFactory);
 					continue;
@@ -166,6 +183,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 					throw ex;
 				}
 			}
+			// 解析不出来，抛异常
 			if (args[i] == null) {
 				throw new IllegalStateException("Could not resolve method parameter at index " +
 						parameter.getParameterIndex() + " in " + parameter.getMethod().toGenericString() +
@@ -200,6 +218,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	 * Invoke the handler method with the given argument values.
 	 */
 	protected Object doInvoke(Object... args) throws Exception {
+		// 强制将他变为可调用 即使是private方法
 		ReflectionUtils.makeAccessible(getBridgedMethod());
 		try {
 			return getBridgedMethod().invoke(getBean(), args);
