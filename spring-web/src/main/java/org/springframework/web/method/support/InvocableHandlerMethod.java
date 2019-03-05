@@ -149,6 +149,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	}
 
 	/**
+	 * 根据当前请求获取方法的请求参数
 	 * Get the method argument values for the current request.
 	 * 两种解析形式 1： providedArgs 2：argumentResolvers 在RequestMappingHandlerAdapter中只有argumentResolvers解析
 	 *
