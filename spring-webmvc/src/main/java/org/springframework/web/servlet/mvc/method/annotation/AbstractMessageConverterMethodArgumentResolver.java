@@ -188,10 +188,12 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 		try {
 			inputMessage = new EmptyBodyCheckingHttpInputMessage(inputMessage);
 
+			// 遍历 this.messageConverters 选择适合的消息处理器来处理参数
 			for (HttpMessageConverter<?> converter : this.messageConverters) {
 				Class<HttpMessageConverter<?>> converterType = (Class<HttpMessageConverter<?>>) converter.getClass();
 				if (converter instanceof GenericHttpMessageConverter) {
 					GenericHttpMessageConverter<?> genericConverter = (GenericHttpMessageConverter<?>) converter;
+					// 判断是否适合处理参数
 					if (genericConverter.canRead(targetType, contextClass, contentType)) {
 						if (logger.isDebugEnabled()) {
 							logger.debug("Read [" + targetType + "] as \"" + contentType + "\" with [" + converter + "]");
