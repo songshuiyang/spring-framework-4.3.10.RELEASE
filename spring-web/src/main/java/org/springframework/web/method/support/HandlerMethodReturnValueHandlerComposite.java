@@ -67,6 +67,7 @@ public class HandlerMethodReturnValueHandlerComposite implements AsyncHandlerMet
 	}
 
 	/**
+	 * 迭代注册过的 HandlerMethodReturnValueHandler, 然后找到对应的ReturnValueHandler
 	 * Iterate over registered {@link HandlerMethodReturnValueHandler}s and invoke the one that supports it.
 	 * @throws IllegalStateException if no suitable {@link HandlerMethodReturnValueHandler} is found.
 	 */

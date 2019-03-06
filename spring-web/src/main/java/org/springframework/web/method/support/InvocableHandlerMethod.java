@@ -32,7 +32,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.HandlerMethod;
 
 /**
- * 在 HandlerMethod类的基础上添加了调用的功能
+ * 在 HandlerMethod类的基础上添加了方法调用功能及注册了参数解析组件
+ *
  * Provides a method for invoking the handler method for a given request after resolving its
  * method argument values through registered {@link HandlerMethodArgumentResolver}s.
  *
@@ -173,8 +174,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			if (this.argumentResolvers.supportsParameter(parameter)) {
 				try {
 					// 使用argumentResolvers解析参数
-					args[i] = this.argumentResolvers.resolveArgument(
-							parameter, mavContainer, request, this.dataBinderFactory);
+					args[i] = this.argumentResolvers.resolveArgument(parameter, mavContainer, request, this.dataBinderFactory);
 					continue;
 				}
 				catch (Exception ex) {

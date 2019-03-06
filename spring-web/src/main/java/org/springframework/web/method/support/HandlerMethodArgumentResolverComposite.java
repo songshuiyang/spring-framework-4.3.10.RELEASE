@@ -30,6 +30,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 
 /**
+ * HandlerMethodArgumentResolver 的仓库
+ *
  * Resolves method parameters by delegating to a list of registered {@link HandlerMethodArgumentResolver}s.
  * Previously resolved method parameters are cached for faster lookups.
  *
@@ -107,6 +109,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	}
 
 	/**
+	 * 迭代注册过的 HandlerMethodArgumentResolver, 然后找到对应的ArgumentResolver
 	 * Iterate over registered {@link HandlerMethodArgumentResolver}s and invoke the one that supports it.
 	 * @throws IllegalStateException if no suitable {@link HandlerMethodArgumentResolver} is found.
 	 */
@@ -122,6 +125,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	}
 
 	/**
+	 * 先从缓存里取，没有的再遍历，注意这里是先来先得的
 	 * Find a registered {@link HandlerMethodArgumentResolver} that supports the given method parameter.
 	 */
 	private HandlerMethodArgumentResolver getArgumentResolver(MethodParameter parameter) {
