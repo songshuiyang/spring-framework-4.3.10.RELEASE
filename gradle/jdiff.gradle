@@ -16,10 +16,10 @@ task jdiff {
 
 	def jdiffHome = "${rootProject.rootDir}/gradle/jdiff"
 
-	ant.taskdef(
-			name: "jdiff",
-			classname: "jdiff.JDiffAntTask",
-			classpath: "${jdiffHome}/antjdiff.jar")
+//	ant.taskdef(
+//			name: "jdiff",
+//			classname: "jdiff.JDiffAntTask",
+//			classpath: "${jdiffHome}/antjdiff.jar")
 
 	def currentVersion = rootProject.version
 	def currentVersionRoot = rootProject.rootDir

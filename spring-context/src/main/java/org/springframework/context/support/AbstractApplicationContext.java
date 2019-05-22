@@ -522,16 +522,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
+
 				// Invoke factory processors registered as beans in the context.
-				// 调用工厂后处理器
+				// 调用工厂后处理器 根据反射机制从BeanDefinitionRegistry中找出所有实现了BeanFactoryPostProcessor接口的bean，
+				// 并调用其postProcessBeanFactory接口方法
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
-				// 注册Bean后处理器
+				// 注册Bean后处理器 根据反射机制从BeanDefinitionRegistry中找出所有实现了BeanPostProcessor接口的bean，
+				// 并将它们注册到容器Bean后处理器的注册表中
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
-				// 初始化消息源
+				// 初始化消息源 初始化容器的国际化消息资源
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
@@ -539,7 +542,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
-				// 初始化其他特殊的bean，由具体子类实现
+				// 初始化其他特殊的bean，由具体子类实现，这是个钩子方法
 				onRefresh();
 
 				// Check for listener beans and register them.
@@ -547,7 +550,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				// 初始化所有单实例的Bean，使用懒加载模式的bean除外
+				// 初始化所有单实例的Bean，使用懒加载模式的bean除外，初始化Bean后将它们放到Spring容器的缓冲池中
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
