@@ -46,6 +46,7 @@ Thumbs.db
 
 # IDEA project file #
 #####################
+idea
 .idea
 *.ids
 *.iml
