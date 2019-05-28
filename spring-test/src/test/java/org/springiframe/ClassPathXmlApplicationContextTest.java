@@ -1,5 +1,6 @@
 package org.springiframe;
 
+import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springiframe.entity.User;
 
@@ -9,7 +10,8 @@ import org.springiframe.entity.User;
  */
 public class ClassPathXmlApplicationContextTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void classPathXmlApplicationContext () {
         ClassPathXmlApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("beans/bean.xml");
         User user = xmlApplicationContext.getBean(User.class);
     }

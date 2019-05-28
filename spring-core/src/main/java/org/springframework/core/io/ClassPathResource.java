@@ -27,6 +27,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 类路径资源的{@link Resource} 接口的实现
+ *
+ * 如果类路径资源是保存在文件系统中，则支持解析为{@code java.io.File}，但不支持JAR中的资源。
+ *
  * {@link Resource} implementation for class path resources. Uses either a
  * given {@link ClassLoader} or a given {@link Class} for loading resources.
  *

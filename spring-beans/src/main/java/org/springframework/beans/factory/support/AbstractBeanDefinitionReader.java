@@ -33,6 +33,8 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.Assert;
 
 /**
+ * 对 EnvironmentCapable、BeanDefinitionReader定义的功能进行实现
+ *
  * Abstract base class for bean definition readers which implement
  * the {@link BeanDefinitionReader} interface.
  *

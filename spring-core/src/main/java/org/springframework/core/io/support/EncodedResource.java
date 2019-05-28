@@ -28,6 +28,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * 对Resource进行 编码设置 最终以什么样的编码去解读
+ * 主要体现在
+ * @see EncodedResource#getReader() 方法中，当设置了编码属性的时候Spring会使用相应的编码作为输入流的编码
+ *
  * Holder that combines a {@link Resource} descriptor with a specific encoding
  * or {@code Charset} to be used for reading from the resource.
  *

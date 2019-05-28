@@ -22,6 +22,8 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 
 /**
+ * 定义将资源文件加载到转化为Document的功能
+ *
  * Strategy interface for loading an XML {@link Document}.
  *
  * @author Rob Harrop

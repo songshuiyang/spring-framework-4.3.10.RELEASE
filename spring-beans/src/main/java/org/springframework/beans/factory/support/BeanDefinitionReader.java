@@ -21,6 +21,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 /**
+ * 主要定义资源文件读取并转换为BeanDefinition的各个功能
+ *
  * Simple interface for bean definition readers.
  * Specifies load methods with Resource and String location parameters.
  *
