@@ -20,6 +20,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.core.ResolvableType;
 
 /**
+ * Spring容器最顶级的接口
+ *
  * The root interface for accessing a Spring bean container.
  * This is the basic client view of a bean container;
  * further interfaces such as {@link ListableBeanFactory} and

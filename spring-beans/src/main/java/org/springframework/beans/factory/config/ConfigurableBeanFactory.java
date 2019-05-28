@@ -30,6 +30,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * 提供配置 factory 的各种方法
+ *
  * Configuration interface to be implemented by most bean factories. Provides
  * facilities to configure a bean factory, in addition to the bean factory
  * client methods in the {@link org.springframework.beans.factory.BeanFactory}

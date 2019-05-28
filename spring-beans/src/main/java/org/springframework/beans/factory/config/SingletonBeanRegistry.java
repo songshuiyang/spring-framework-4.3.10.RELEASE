@@ -17,6 +17,8 @@
 package org.springframework.beans.factory.config;
 
 /**
+ * 定义对单例的注册及获取
+ *
  * Interface that defines a registry for shared bean instances.
  * Can be implemented by {@link org.springframework.beans.factory.BeanFactory}
  * implementations in order to expose their singleton management facility

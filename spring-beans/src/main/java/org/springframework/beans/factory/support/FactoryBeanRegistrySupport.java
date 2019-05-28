@@ -31,6 +31,8 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 
 /**
+ * 在 DefaultSingletonBeanRegistry 基础上添加了对 FactoryBean 的特殊处理功能
+ *
  * Support base class for singleton registries which need to handle
  * {@link org.springframework.beans.factory.FactoryBean} instances,
  * integrated with {@link DefaultSingletonBeanRegistry}'s singleton management.

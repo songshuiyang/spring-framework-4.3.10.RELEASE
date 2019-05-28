@@ -27,6 +27,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * 使用aliasMap作为缓存，实现 AliasRegistry 接口
+ *
  * Simple implementation of the {@link AliasRegistry} interface.
  * Serves as base class for
  * {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}
@@ -39,7 +41,6 @@ public class SimpleAliasRegistry implements AliasRegistry {
 
 	/** Map from alias to canonical name */
 	private final Map<String, String> aliasMap = new ConcurrentHashMap<String, String>(16);
-
 
 	@Override
 	public void registerAlias(String name, String alias) {
