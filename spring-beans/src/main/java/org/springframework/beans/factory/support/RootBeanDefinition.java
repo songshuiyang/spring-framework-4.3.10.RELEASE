@@ -30,6 +30,8 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 
 /**
+ * 父<bean>用RootBeanDefinition表示，没有父类的<bean>也用
+ *
  * A root bean definition represents the merged bean definition that backs
  * a specific bean in a Spring BeanFactory at runtime. It might have been created
  * from multiple original bean definitions that inherit from each other,

@@ -21,6 +21,8 @@ import org.springframework.beans.MutablePropertyValues;
 import org.springframework.core.AttributeAccessor;
 
 /**
+ * 配置文件<bean>元素标签在容器中的内部表示形式
+ *
  * A BeanDefinition describes a bean instance, which has property values,
  * constructor argument values, and further information supplied by
  * concrete implementations.

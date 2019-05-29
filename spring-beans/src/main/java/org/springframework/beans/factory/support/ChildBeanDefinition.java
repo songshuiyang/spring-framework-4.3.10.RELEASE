@@ -21,6 +21,8 @@ import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * 子<bean>
+ *
  * Bean definition for beans which inherit settings from their parent.
  * Child bean definitions have a fixed dependency on a parent bean definition.
  *

@@ -36,6 +36,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * BeanDefinition的抽象基类
+ *
  * Base class for concrete, full-fledged {@link BeanDefinition} classes,
  * factoring out common properties of {@link GenericBeanDefinition},
  * {@link RootBeanDefinition}, and {@link ChildBeanDefinition}.
@@ -137,20 +139,35 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private volatile Object beanClass;
 
+	/**
+	 * bean属性scope
+	 */
 	private String scope = SCOPE_DEFAULT;
-
+	/**
+	 * 是否是抽奖
+	 */
 	private boolean abstractFlag = false;
-
+	/**
+	 * 是否延迟加载
+	 */
 	private boolean lazyInit = false;
-
+	/**
+	 * 自动注入模式，对应bean属性autowire
+	 */
 	private int autowireMode = AUTOWIRE_NO;
-
+	/**
+	 * 依赖检查
+	 */
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
-
+	/**
+	 * 用来表示一个bean的实例化依靠另一个bean先实例化，对应bean属性depend-on
+	 */
 	private String[] dependsOn;
 
 	private boolean autowireCandidate = true;
-
+	/**
+	 * 首选bean
+	 */
 	private boolean primary = false;
 
 	private final Map<String, AutowireCandidateQualifier> qualifiers =
