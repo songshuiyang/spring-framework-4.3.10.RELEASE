@@ -17,6 +17,17 @@
 package org.springframework.beans.factory;
 
 /**
+ * 一般情况下，Spring通过反射机制利用<bean>的class属性指定实现类实例化Bean，在某些情况下，
+ * 实例化Bean过程比较复杂，如果按照传统的方式，则需要在<bean>中提供大量的配置信息。配置方式
+ * 的灵活性是受限的，这时采用编码的方式可能会得到一个简单的方案。Spring为此提供了一个
+ * org.springframework.bean.factory.FactoryBean的工厂类接口，用户可以通过实现该接口定制
+ * 实例化Bean的逻辑。FactoryBean接口对于Spring框架来说占用重要的地位，Spring自身就提供了70
+ * 多个FactoryBean的实现。
+ *
+ * FactoryBean是一个接口，当在IOC容器中的Bean实现了FactoryBean后，通过getBean(String BeanName)
+ * 获取到的Bean对象并不是FactoryBean的实现类对象，而是这个实现类中的getObject()方法返回的对象。
+ * 要想获取FactoryBean的实现类，就要getBean(&BeanName)，在BeanName之前加上&。
+ *
  * Interface to be implemented by objects used within a {@link BeanFactory} which
  * are themselves factories for individual objects. If a bean implements this
  * interface, it is used as a factory for an object to expose, not directly as a
