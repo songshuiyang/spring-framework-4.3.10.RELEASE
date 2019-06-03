@@ -10,6 +10,16 @@ public class User {
 
     private Integer age;
 
+    private Role role;
+
+    public User() {
+    }
+
+    public User(String userName, Integer age) {
+        this.userName = userName;
+        this.age = age;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -26,4 +36,11 @@ public class User {
         this.age = age;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
