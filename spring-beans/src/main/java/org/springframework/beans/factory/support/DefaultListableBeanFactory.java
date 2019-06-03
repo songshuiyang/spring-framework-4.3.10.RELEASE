@@ -1053,19 +1053,23 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		descriptor.initParameterNameDiscovery(getParameterNameDiscoverer());
 		if (javaUtilOptionalClass == descriptor.getDependencyType()) {
+			// javaUtilOptionalClass类注入的特殊处理 ？
 			return new OptionalDependencyFactory().createOptionalDependency(descriptor, requestingBeanName);
 		}
 		else if (ObjectFactory.class == descriptor.getDependencyType() ||
 				ObjectProvider.class == descriptor.getDependencyType()) {
+			// ObjectFactory类注入的特殊处理
 			return new DependencyObjectProvider(descriptor, requestingBeanName);
 		}
 		else if (javaxInjectProviderClass == descriptor.getDependencyType()) {
+			// javaxInjectProviderClass类注入的特殊处理
 			return new Jsr330ProviderFactory().createDependencyProvider(descriptor, requestingBeanName);
 		}
 		else {
 			Object result = getAutowireCandidateResolver().getLazyResolutionProxyIfNecessary(
 					descriptor, requestingBeanName);
 			if (result == null) {
+				// 通用处理逻辑
 				result = doResolveDependency(descriptor, requestingBeanName, autowiredBeanNames, typeConverter);
 			}
 			return result;
@@ -1083,6 +1087,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 
 			Class<?> type = descriptor.getDependencyType();
+			// 用于支持Spring中新增的注解@Value
 			Object value = getAutowireCandidateResolver().getSuggestedValue(descriptor);
 			if (value != null) {
 				if (value instanceof String) {
@@ -1090,12 +1095,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					BeanDefinition bd = (beanName != null && containsBean(beanName) ? getMergedBeanDefinition(beanName) : null);
 					value = evaluateBeanDefinitionString(strVal, bd);
 				}
+				// 通过转化器将bean的值转化为对应bean的值
 				TypeConverter converter = (typeConverter != null ? typeConverter : getTypeConverter());
 				return (descriptor.getField() != null ?
 						converter.convertIfNecessary(value, type, descriptor.getField()) :
 						converter.convertIfNecessary(value, type, descriptor.getMethodParameter()));
 			}
-
+			// 实例化后的bean
 			Object multipleBeans = resolveMultipleBeans(descriptor, beanName, autowiredBeanNames, typeConverter);
 			if (multipleBeans != null) {
 				return multipleBeans;

@@ -94,7 +94,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Set of registered singletons, containing the bean names in registration order */
 	private final Set<String> registeredSingletons = new LinkedHashSet<String>(256);
 
-	/** Names of beans that are currently in creation */
+	/**
+	 * Names of beans that are currently in creation
+	 *
+	 * 记录bean的加载状态	，在bean开始创建前会将beanName记录在属性中，创建结束会将该beanName从该属性中移除
+	 */
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(16));
 
@@ -335,6 +339,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 返回该bean是否在创建中
+	 *
 	 * Return whether the specified singleton bean is currently in creation
 	 * (within the entire factory).
 	 * @param beanName the name of the bean
