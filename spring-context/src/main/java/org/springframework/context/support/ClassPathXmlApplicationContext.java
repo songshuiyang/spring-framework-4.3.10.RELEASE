@@ -134,8 +134,10 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 			throws BeansException {
 
 		super(parent);
+		// 可以将配置文件路径以数组的方式传入
 		setConfigLocations(configLocations);
 		if (refresh) {
+			// 重点
 			refresh();
 		}
 	}
