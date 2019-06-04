@@ -1308,7 +1308,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			PropertyDescriptor[] filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
 			if (hasInstAwareBpps) {
 				// PropertyValue值设置后，Spring会调用getBeanPostProcessor方法遍历Bean工厂中注册的所有BeanPostProcessor
-				// 其中就包括AutowiredAnnotationBeanPostProcessor @Autowired注解
+				// 其中就包括AutowiredAnnotationBeanPostProcessor @Autowired注解就是在这里完成的注入
 				for (BeanPostProcessor bp : getBeanPostProcessors()) {
 					if (bp instanceof InstantiationAwareBeanPostProcessor) {
 						InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;

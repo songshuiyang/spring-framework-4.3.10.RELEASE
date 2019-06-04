@@ -554,7 +554,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				// 初始化所有单实例的Bean，使用懒加载模式的bean除外，初始化Bean后将它们放到Spring容器的缓冲池中
+				// 重点：初始化所有单实例的Bean，使用懒加载模式的bean除外，初始化Bean后将它们放到Spring容器的缓冲池中
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
@@ -885,12 +885,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Stop using the temporary ClassLoader for type matching.
+		// 停止使用临时的类加载器
 		beanFactory.setTempClassLoader(null);
 
 		// Allow for caching all bean definition metadata, not expecting further changes.
+		// 缓存所有的bean definition数据，不期望以后会改变
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		// 实例化所有的non-lazy-init 单例 ApplicationContext实现的默认行为就是在启动时将所有单例bean提前进行实例化
 		beanFactory.preInstantiateSingletons();
 	}
 
