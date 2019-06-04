@@ -27,6 +27,10 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.util.Assert;
 
 /**
+ * 对于AOP的实现，基本上是靠AnnotationAwareAspectJAutoProxyCreator去完成的，它可以根据@Point注解
+ * 定义的切点来自动代理相匹配的bean，但是为了配置便捷，Spring使用了自定义配置来帮助我们自动注册
+ * AnnotationAwareAspectJAutoProxyCreator
+ *
  * {@link AspectJAwareAdvisorAutoProxyCreator} subclass that processes all AspectJ
  * annotation aspects in the current application context, as well as Spring Advisors.
  *
