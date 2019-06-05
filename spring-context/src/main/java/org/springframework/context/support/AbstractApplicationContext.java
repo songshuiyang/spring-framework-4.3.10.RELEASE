@@ -647,7 +647,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc. 设置classLoader
 		beanFactory.setBeanClassLoader(getClassLoader());
-		// 增加对SPEL语言的支持 注册StandardBeanExpressionResolver语言解析	器，就可以对SPEL进行解析了
+		// 增加对SPEL语言的支持 注册StandardBeanExpressionResolver语言解析器，就可以对SPEL进行解析了
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 		// 为beanFactory增加了一个PropertyEditor，这个主要是对bean属性等设置管理的一个工具
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
