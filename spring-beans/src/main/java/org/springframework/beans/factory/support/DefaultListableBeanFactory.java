@@ -741,6 +741,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			// 获取BeanDefinition 如果存在父子关系的bean，那么会将两个bean的信息合并为新bean
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
+				// 是否是FactoryBean
 				if (isFactoryBean(beanName)) {
 					final FactoryBean<?> factory = (FactoryBean<?>) getBean(FACTORY_BEAN_PREFIX + beanName);
 					boolean isEagerInit;

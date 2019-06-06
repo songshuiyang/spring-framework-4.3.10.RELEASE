@@ -1030,6 +1030,7 @@ project("spring-test") {
 		testCompile("org.apache.tiles:tiles-servlet:${tiles3Version}") {
 			exclude group: "org.slf4j", module: "jcl-over-slf4j"
 		}
+		testCompile("org.projectlombok:lombok:1.18.4")
 		testCompile("org.hsqldb:hsqldb:${hsqldbVersion}")
 		testCompile("org.slf4j:slf4j-jcl:${slf4jVersion}")
 		testCompile("org.apache.httpcomponents:httpclient:${httpclientVersion}")

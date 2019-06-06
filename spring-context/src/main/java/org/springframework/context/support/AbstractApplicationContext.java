@@ -518,7 +518,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			// Prepare the bean factory for use in this context.
 			// 进入prepareBeanFactory前，Spring已经完成了对配置的解析，而ApplicationContext在功能上的扩展也由此展开
-			// 对BeanFactory进行各种功能填充 @Qualifier @Autowired这两注解就是在这步骤中增加的支持
+			// 对BeanFactory进行各种功能填充 @Qualifier @Autowired这两注解功能组件就是在这步骤中增加的支持
 			prepareBeanFactory(beanFactory);
 
 			try {
