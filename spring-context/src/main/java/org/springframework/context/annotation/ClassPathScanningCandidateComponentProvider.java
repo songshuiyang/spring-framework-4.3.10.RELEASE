@@ -346,11 +346,13 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
 		for (TypeFilter tf : this.excludeFilters) {
+			// 排除过滤器
 			if (tf.match(metadataReader, this.metadataReaderFactory)) {
 				return false;
 			}
 		}
 		for (TypeFilter tf : this.includeFilters) {
+			// 筛选过滤器
 			if (tf.match(metadataReader, this.metadataReaderFactory)) {
 				return isConditionMatch(metadataReader);
 			}

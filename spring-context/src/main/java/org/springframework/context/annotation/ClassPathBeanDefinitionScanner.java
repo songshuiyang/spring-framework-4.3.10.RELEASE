@@ -161,6 +161,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		this.registry = registry;
 
 		if (useDefaultFilters) {
+			// 注册Component注解，也包括 Repository Service Controller 注解
 			registerDefaultFilters();
 		}
 		setEnvironment(environment);
@@ -258,42 +259,6 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
-	 * Perform a scan within the specified base packages,
-	 * returning the registered bean definitions.
-	 * <p>This method does <i>not</i> register an annotation config processor
-	 * but rather leaves this up to the caller.
-	 * @param basePackages the packages to check for annotated classes
-	 * @return set of beans registered if any for tooling registration purposes (never {@code null})
-	 */
-	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
-		Assert.notEmpty(basePackages, "At least one base package must be specified");
-		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<BeanDefinitionHolder>();
-		for (String basePackage : basePackages) {
-			// 找bean
-			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
-			for (BeanDefinition candidate : candidates) {
-				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
-				candidate.setScope(scopeMetadata.getScopeName());
-				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
-				if (candidate instanceof AbstractBeanDefinition) {
-					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
-				}
-				if (candidate instanceof AnnotatedBeanDefinition) {
-					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
-				}
-				if (checkCandidate(beanName, candidate)) {
-					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
-					definitionHolder =
-							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
-					beanDefinitions.add(definitionHolder);
-					registerBeanDefinition(definitionHolder, this.registry);
-				}
-			}
-		}
-		return beanDefinitions;
-	}
-
-	/**
 	 * Apply further settings to the given bean definition,
 	 * beyond the contents retrieved from scanning the component class.
 	 * @param beanDefinition the scanned bean definition
@@ -304,6 +269,48 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		if (this.autowireCandidatePatterns != null) {
 			beanDefinition.setAutowireCandidate(PatternMatchUtils.simpleMatch(this.autowireCandidatePatterns, beanName));
 		}
+	}
+
+	/**
+	 * Perform a scan within the specified base packages,
+	 * returning the registered bean definitions.
+	 * <p>This method does <i>not</i> register an annotation config processor
+	 * but rather leaves this up to the caller.
+	 * @param basePackages the packages to check for annotated classes
+	 * @return set of beans registered if any for tooling registration purposes (never {@code null})
+	 */
+	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
+		// base-package属性必须要有
+		Assert.notEmpty(basePackages, "At least one base package must be specified");
+		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<BeanDefinitionHolder>();
+		// 对每个基础包都进行扫描寻找并且对基础包下的所有class都注册为BeanDefinition
+		for (String basePackage : basePackages) {
+			// 并对得到的candidates集合进行过滤，此处便用到include-filters和exclude-filters
+			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
+			for (BeanDefinition candidate : candidates) {
+				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
+				candidate.setScope(scopeMetadata.getScopeName());
+				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
+				if (candidate instanceof AbstractBeanDefinition) {
+					// 设置lazy-init/autowire-code默认属性，从spring配置的<beans>节点属性读取
+					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
+				}
+				if (candidate instanceof AnnotatedBeanDefinition) {
+					// 读取bean上的注解，比如`@Lazy`、`@Dependson`的值设置相应的属性
+					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
+				}
+				// 查看是否已注册
+				if (checkCandidate(beanName, candidate)) {
+					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
+					// 默认采取cglib来做代理
+					definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+					beanDefinitions.add(definitionHolder);
+					// 注册bean信息到工厂中
+					registerBeanDefinition(definitionHolder, this.registry);
+				}
+			}
+		}
+		return beanDefinitions;
 	}
 
 	/**

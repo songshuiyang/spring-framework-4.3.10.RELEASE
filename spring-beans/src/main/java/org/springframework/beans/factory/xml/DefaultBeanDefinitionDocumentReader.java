@@ -174,7 +174,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 					if (delegate.isDefaultNamespace(ele)) {
 						parseDefaultElement(ele, delegate);
 					}
-					else { // 自定义标签解析
+					else { // 自定义标签解析 如：<context:component-scan base-package = "*"/>
 						delegate.parseCustomElement(ele);
 					}
 				}
