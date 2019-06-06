@@ -98,12 +98,14 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 * @see org.springframework.beans.factory.FactoryBean#getObject()
 	 */
 	protected Object getObjectFromFactoryBean(FactoryBean<?> factory, String beanName, boolean shouldPostProcess) {
-		// 如果是单例模式
+		// 如果是单例模式且缓存中存在
 		if (factory.isSingleton() && containsSingleton(beanName)) {
+			// 同步锁，锁住的对象都是 this.singletonObjects，主要是因为在单例模式中必须要保证全局唯一
 			synchronized (getSingletonMutex()) {
+				// 从缓存中获取指定的 factoryBean
 				Object object = this.factoryBeanObjectCache.get(beanName);
 				if (object == null) {
-					// 继续跟进
+					// 继续跟进，为空，则从 FactoryBean 中获取对象
 					object = doGetObjectFromFactoryBean(factory, beanName);
 					// Only post-process and store if not put there already during getObject() call above
 					// (e.g. because of circular reference processing triggered by custom getBean calls)
@@ -121,6 +123,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 										"Post-processing of FactoryBean's singleton object failed", ex);
 							}
 						}
+						// 添加到 factoryBeanObjectCache 中，进行缓存
 						this.factoryBeanObjectCache.put(beanName, (object != null ? object : NULL_OBJECT));
 					}
 				}
@@ -128,10 +131,12 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 			}
 		}
 		else {
+			// 为空，则从 FactoryBean 中获取对象
 			Object object = doGetObjectFromFactoryBean(factory, beanName);
+			// 需要后续处理
 			if (object != null && shouldPostProcess) {
 				try {
-					// 后处理器
+					// 对从 FactoryBean 获取的对象进行后处理后处理器
 					object = postProcessObjectFromFactoryBean(object, beanName);
 				}
 				catch (Throwable ex) {
