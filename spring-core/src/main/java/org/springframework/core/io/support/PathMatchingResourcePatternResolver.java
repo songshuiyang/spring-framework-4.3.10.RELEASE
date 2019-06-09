@@ -53,7 +53,8 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * 为 ResourcePatternResolver 最常用的子类，它除了支持 ResourceLoader 和 ResourcePatternResolver 新增的 "classpath*:" 前缀外，
+ * 为 ResourcePatternResolver 最常用的子类，
+ * 它除了支持 ResourceLoader 和 ResourcePatternResolver 新增的 "classpath*:" 前缀外，
  * 还支持 Ant 风格的路径匹配模式
  *
  * A {@link ResourcePatternResolver} implementation that is able to resolve a
@@ -272,24 +273,33 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		return getResourceLoader().getResource(location);
 	}
 
+	/**
+	 * Spring可以通过指定classpath*:与classpath:前缀加路径的方式从classpath加载文件,
+	 * 如bean的定义文件.classpath*:的出现是为了从多个jar文件中加载相同的文件，.classpath:只能加载找到的第一个文件.
+	 * @param locationPattern the location pattern to resolve
+	 * @return
+	 * @throws IOException
+	 */
 	@Override
 	public Resource[] getResources(String locationPattern) throws IOException {
 		Assert.notNull(locationPattern, "Location pattern must not be null");
 		// 以 "classpath*:" 开头
 		if (locationPattern.startsWith(CLASSPATH_ALL_URL_PREFIX)) {
-			// 路径包含通配符
+			// 路径包含通配符 classpath*:
 			// a class path resource (multiple resources for same name possible)
 			if (getPathMatcher().isPattern(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()))) {
 				// a class path resource pattern
 				return findPathMatchingResources(locationPattern);
 			}
 			else {
-				// 路径不包含通配符
+				// 路径不包含通配符，该方法返回 classes 路径下和所有 jar 包中的所有相匹配的资源。
 				// all class path resources with the given name
 				return findAllClassPathResources(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()));
 			}
 		} // 不以 "classpath*:" 开头
 		else {
+			// 通常只在这里的前缀后面查找模式
+			// 而在 Tomcat 上只有在 “*/ ”分隔符之后才为其 “war:” 协议
 			// Generally only look for a pattern after a prefix here,
 			// and on Tomcat only after the "*/" separator for its "war:" protocol.
 			int prefixEnd = (locationPattern.startsWith("war:") ? locationPattern.indexOf("*/") + 1 :
@@ -299,7 +309,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 				return findPathMatchingResources(locationPattern);
 			}
 			else {
-				// a single resource with the given name
+				// a single resource with the given name 直接委托给相应的 ResourceLoader 来实现。
 				return new Resource[] {getResourceLoader().getResource(locationPattern)};
 			}
 		}
@@ -456,6 +466,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	}
 
 	/**
+	 * 如果包含通配符则调用findPathMatchingResources方法
 	 * 确定目录，获取该目录下得所有资源。在所获得的所有资源后，进行迭代匹配获取我们想要的资源。
 	 *
 	 * Find all resources that match the given location pattern via the

@@ -116,11 +116,26 @@ public class DefaultResourceLoader implements ResourceLoader {
 	}
 
 
+	/**
+	 * 可以看到Resource的加载获取是有顺序的，谁先获得就先返回
+	 * 	1、首先，通过 ProtocolResolver 来加载资源，为什么要这个呢，它允许用户自定义资源加载协议，
+	 * 	   而不需要继承 ResourceLoader 的子类。ProtocolResolver 接口，仅有一个方法resolve，实现该方法
+	 * 	   就可以自己实现资源加载，
+	 * 	2、以 / 开头，返回 ClassPathContextResource 类型的资源
+	 * 	3、以 classpath: 开头，返回 ClassPathResource 类型的资源
+	 * 	4、加载URL资源文件
+	 * 	5、上一步没有找到，抛异常 ，就是返回 ClassPathContextResource 类型的资源
+	 * @param location the resource location
+	 * @return
+	 */
 	@Override
 	public Resource getResource(String location) {
 		Assert.notNull(location, "Location must not be null");
-
-		// 首先，通过 ProtocolResolver 来加载资源
+		/**
+		 * 首先，通过 ProtocolResolver 来加载资源，
+		 * @see #protocolResolvers
+		 * 调用方法 {@link DefaultResourceLoader#addProtocolResolver(ProtocolResolver)} 即可添加
+		 */
 		for (ProtocolResolver protocolResolver : this.protocolResolvers) {
 			Resource resource = protocolResolver.resolve(location, this);
 			if (resource != null) {
