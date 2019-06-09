@@ -24,6 +24,9 @@ import org.springframework.core.io.Resource;
 /**
  * 从XML文档中读取BeanDefinition
  *
+ * XmlBeanFactory与DefaultListableBeanFactory不同的地方其实是XmlBeanFactory使用了自定义的XML读取器，
+ * 实现了个性化的BeanDefinitionReader读取
+ *
  * Convenience extension of {@link DefaultListableBeanFactory} that reads bean definitions
  * from an XML document. Delegates to {@link XmlBeanDefinitionReader} underneath; effectively
  * equivalent to using an XmlBeanDefinitionReader with a DefaultListableBeanFactory.
