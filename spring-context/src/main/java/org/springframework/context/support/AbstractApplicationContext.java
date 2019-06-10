@@ -623,8 +623,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
 		// 刷新BeanFactory 子类实现，创建DefaultListableBeanFactory
-		refreshBeanFactory();
 		// 将配置文件的信息装入容器Bean定义注册表(BeanDefinitionRegistry)中，Bean未初始化 子类实现
+		refreshBeanFactory();
+		// 对beanFactory加了个并发锁及空异常检查
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (logger.isDebugEnabled()) {
 			logger.debug("Bean factory for " + getDisplayName() + ": " + beanFactory);

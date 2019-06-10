@@ -21,6 +21,8 @@ import org.springframework.beans.BeansException;
 /**
  * 定义bean初始化之和初始化之后分别调用的的方法
  *
+ * BeanFactory钩子，允许对新建的bean进行自定义修改，eg：检查是否有标记接口或者需要代理bean如果有的话做对应的操作
+ *
  * Factory hook that allows for custom modification of new bean instances,
  * e.g. checking for marker interfaces or wrapping them with proxies.
  *

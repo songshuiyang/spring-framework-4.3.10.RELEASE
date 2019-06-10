@@ -119,8 +119,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	private DocumentLoader documentLoader = new DefaultDocumentLoader();
 
 	/**
-	 * 解析XML,SAX首先会读取xml文档上的声明，根据声明去寻找相应的DTD定义，以便对文档进行一个验证，默认的寻找规则即通过网络，通过网络的话有可能出现网络中断或
-	 * 不可用的情况，所以提供该接口来实现寻找DTD声明的过程，可以把这个文件放到项目中，这样就可以避免网络出错而导致无法启动项目的情况
+	 * 解析XML,SAX首先会读取xml文档上的声明，根据声明去寻找相应的DTD定义，以便对文档进行一个验证，
+	 * 默认的寻找规则即通过网络，通过网络的话有可能出现网络中断或不可用的情况，所以提供该接口来实
+	 * 现寻找DTD声明的过程，可以把这个文件放到项目中，这样就可以避免网络出错而导致无法启动项目的情况
 	 */
 	private EntityResolver entityResolver;
 
