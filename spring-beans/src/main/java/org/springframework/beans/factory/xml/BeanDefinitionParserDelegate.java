@@ -68,7 +68,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 
 /**
- * 定义解析Element的各种方法
+ * BeanDefinitionParserDelegate类提供了解析spring配置文件功能,对于默认空间下的元素在该类内部实现
+ * 对于其它命名空间下的元素可以通过绑定NamespaceHandler的方式来实现,针对每个命名空间下的元素提供不同BeanDefinitionParser来实现.
  *
  * Stateful delegate class used to parse XML bean definitions.
  * Intended for use by both the main parser and any extension
@@ -442,7 +443,7 @@ public class BeanDefinitionParserDelegate {
 		// 获取name属性
 		String nameAttr = ele.getAttribute(NAME_ATTRIBUTE);
 
-		// 分割name属性
+		// 分割name属性 这里是实现了多个name配置的解析，可以是`,; `作为分割
 		List<String> aliases = new ArrayList<String>();
 		if (StringUtils.hasLength(nameAttr)) {
 			String[] nameArr = StringUtils.tokenizeToStringArray(nameAttr, MULTI_VALUE_ATTRIBUTE_DELIMITERS);

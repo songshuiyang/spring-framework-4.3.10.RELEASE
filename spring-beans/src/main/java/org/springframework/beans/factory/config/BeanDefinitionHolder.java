@@ -23,6 +23,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ *
+ * BeanDefinitionHolder 实例已经包含我们配置文件中配置的各个属性了，
+ * 有beanDefinition及beanName和aliases,为注册做准备
+ *
  * Holder for a BeanDefinition with name and aliases.
  * Can be registered as a placeholder for an inner bean.
  *
