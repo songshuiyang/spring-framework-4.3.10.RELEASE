@@ -17,6 +17,8 @@
 package org.springframework.beans;
 
 /**
+ * Bean 元对象持有的配置元素可以通过 #getSource() 方法来获取。代码如下：
+ *
  * Interface to be implemented by bean metadata elements
  * that carry a configuration source object.
  *
