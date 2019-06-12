@@ -27,6 +27,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
+ * 对BeanDefinitionRegistry的基本实现，提供了beanDefinitionMap Map作为BeanDefinition的容器
+ * 下面的方法就是对map的增删改查
+ *
  * Simple implementation of the {@link BeanDefinitionRegistry} interface.
  * Provides registry capabilities only, with no factory capabilities built in.
  * Can for example be used for testing bean definition readers.

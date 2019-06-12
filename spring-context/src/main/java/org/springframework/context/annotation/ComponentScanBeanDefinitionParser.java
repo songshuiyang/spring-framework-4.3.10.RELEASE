@@ -43,6 +43,8 @@ import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.StringUtils;
 
 /**
+ * <context:component-scan/> bean扫描器
+ *
  * Parser for the {@code <context:component-scan/>} element.
  *
  * @author Mark Fisher
@@ -84,8 +86,9 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 				ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
 
 		// Actually scan for bean definitions and register them.
+		// 构建类路径的BeanDefinition扫描器
 		ClassPathBeanDefinitionScanner scanner = configureScanner(parserContext, element);
-		// 扫包逻辑 base-package = "org.springiframe.*" 找出该包下所有的bean注册为beanDefinition
+		// 在指定的基础包中执行扫描 base-package = "org.springiframe.*" 找出该包下所有的bean注册为beanDefinition
 		Set<BeanDefinitionHolder> beanDefinitions = scanner.doScan(basePackages);
 		// 注册组件
 		registerComponents(parserContext.getReaderContext(), beanDefinitions, element);

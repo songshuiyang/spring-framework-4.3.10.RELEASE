@@ -272,6 +272,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
+	 * 在指定的基础包中执行扫描基础包下的所有符合条件的class
+	 *
 	 * Perform a scan within the specified base packages,
 	 * returning the registered bean definitions.
 	 * <p>This method does <i>not</i> register an annotation config processor
@@ -283,9 +285,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		// base-package属性必须要有
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<BeanDefinitionHolder>();
-		// 对每个基础包都进行扫描寻找并且对基础包下的所有class都注册为BeanDefinition
+		// 对每个基础包都进行扫描寻找并且对基础包下的所有符合条件的class注册为BeanDefinition
 		for (String basePackage : basePackages) {
-			// 并对得到的candidates集合进行过滤，此处便用到include-filters和exclude-filters
+			// 核心方法 并对得到的candidates集合进行过滤，此处便用到include-filters和exclude-filters
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			for (BeanDefinition candidate : candidates) {
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
