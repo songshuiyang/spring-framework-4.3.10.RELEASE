@@ -223,12 +223,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * doGetBean统一入口
+	 *
 	 * Return an instance, which may be shared or independent, of the specified bean.
-	 * @param name the name of the bean to retrieve
-	 * @param requiredType the required type of the bean to retrieve
-	 * @param args arguments to use when creating a bean instance using explicit arguments
+	 * @param name the name of the bean to retrieve												要获取 Bean 的名字
+	 * @param requiredType the required type of the bean to retrieve 							要获取 bean 的类型
+	 * @param args arguments to use when creating a bean instance using explicit arguments 		创建 Bean 时传递的参数。这个参数仅限于创建 Bean 时使用。
 	 * (only applied when creating a new instance as opposed to retrieving an existing one)
-	 * @param typeCheckOnly whether the instance is obtained for a type check,
+	 * @param typeCheckOnly whether the instance is obtained for a type check, 					是否为类型检查。
 	 * not for actual use
 	 * @return an instance of the bean
 	 * @throws BeansException if the bean could not be created
@@ -237,7 +239,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(
 			final String name, final Class<T> requiredType, final Object[] args, boolean typeCheckOnly)
 			throws BeansException {
-		// 提取对应的beanName，因为如果是FactoryBean会带上&符号
+		/**
+		 * 提取对应的beanName， 这里传递的是 name 方法，不一定就是 beanName，可能是 aliasName
+		 * 也有可能是 FactoryBean FactoryBean会带上&符号，
+		 */
 		final String beanName = transformedBeanName(name);
 		Object bean;
 		/**
@@ -260,11 +265,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
-			// 为什么会有这么一段呢？因为我们从缓存中获取的 bean 是最原始的 Bean ，并不一定使我们最终想要的 Bean
-			// 返回对应的实例，有时候存在诸如BeanFactory的情况并不是直接返回实例本身而是返回指定方法返回的实例 比如工厂bean中定义的factory-method方法中返回的bean
+			/**
+			 * 为什么会有这么一段呢？因为我们从缓存中获取的 bean 是最原始的 Bean ，并不一定使我们最终想要的 Bean
+			 * 返回对应的实例，有时候存在诸如BeanFactory的情况并不是直接返回实例本身而是返回指定方法返回的实例 比如工厂bean中定义的factory-method方法中返回的bean
+			 */
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
-		else {
+		else { // 在缓存中没有
+
 			// 只有单例情况下才会尝试解决循依赖（如果存在A中有B属性，B中有A属性，那么当依赖注入的时候，就会产生当A还未创建完的时候因为对于B的创建再次创建A，造成循环依赖）
 			// 在原型模式下如果存在循环依赖则会抛出异常。
 			// Fail if we're already creating this bean instance:
@@ -274,7 +282,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			// Check if bean definition exists in this factory.
-			// 判断工厂中是否含有此Bean的定义
+			// 判断工厂中是否含有此Bean的定义，如果没有找到则父类容器里找
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			// 如果beanDefinitionMap中也就是在所有已经加载的类中不包括beanName，则尝试从parentBeanFactory中检测
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
@@ -296,11 +304,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			try {
-				// 将存储XML配置文件的GernericBeanDefinition转换为RootBeanDefinition，
+				// 将存储XML配置文件的GernericBeanDefinition 转换为RootBeanDefinition，
 				// 如果指定BeanName是子Bean的话同时会合并父类的相关属性
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+				// 检查给定的合并的 BeanDefinition
 				checkMergedBeanDefinition(mbd, beanName, args);
 
+				// 处理所依赖的 bean
 				// Guarantee initialization of beans that the current bean depends on.
 				String[] dependsOn = mbd.getDependsOn();
 				// 若存在依赖则需要递归实例化依赖的bean，在Spring的加载顺序中，在初始化某一个bean的时候首先会初始化这个bean所对应的依赖
@@ -312,6 +322,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						}
 						// 缓存依赖调用
 						registerDependentBean(dep, beanName);
+						/**
+						 * 递归处理依赖 Bean
+						 * 每个 Bean 都不是单独工作的，它会依赖其他 Bean，其他 Bean 也会依赖它。
+						 * 对于依赖的 Bean ，它会优先加载，所以，在 Spring 的加载顺序中，在初始化某一个 Bean 的时候，首先会初始化这个 Bean 的依赖。
+						 */
 						getBean(dep);
 					}
 				}
@@ -387,10 +402,15 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				throw ex;
 			}
 		}
-		// 检查需要的类型是否符合bean的实际类型
-		// Check if required type matches the type of the actual bean instance.
+		/**
+		 * 检查需要的类型是否符合bean的实际类型 Check if required type matches the type of the actual bean instance.
+		 * 当然就一般而言，我们是不需要进行类型转换的，也就是 requiredType 为空（比如 #getBean(String name) 方法）。
+		 * 但有，可能会存在这种情况，比如我们返回的 Bean 类型为 String ，我们在使用的时候需要将其转换为 Integer，
+		 * 那么这个时候 requiredType 就有用武之地了。当然我们一般是不需要这样做的。
+		 */
 		if (requiredType != null && bean != null && !requiredType.isAssignableFrom(bean.getClass())) {
 			try {
+				// 执行转换
 				return getTypeConverter().convertIfNecessary(bean, requiredType);
 			}
 			catch (TypeMismatchException ex) {
@@ -398,6 +418,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.debug("Failed to convert bean '" + name + "' to required type '" +
 							ClassUtils.getQualifiedName(requiredType) + "'", ex);
 				}
+				// 转换失败，抛出 BeanNotOfRequiredTypeException 异常
 				throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
 			}
 		}
@@ -1131,12 +1152,17 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	//---------------------------------------------------------------------
 
 	/**
+	 * tips:
+	 * 假设配置了一个 FactoryBean 的名字为 "abc" ，那么获取 FactoryBean 创建的 Bean 时，使用 "abc" ，
+	 * 如果获取 FactoryBean 本身，使用 "$abc"
+	 *
 	 * Return the bean name, stripping out the factory dereference prefix if necessary,
 	 * and resolving aliases to canonical names.
 	 * @param name the user-specified name
 	 * @return the transformed bean name
 	 */
 	protected String transformedBeanName(String name) {
+		// canonicalName 方法取指定的 alias 所表示的最终 beanName 。
 		return canonicalName(BeanFactoryUtils.transformedBeanName(name));
 	}
 

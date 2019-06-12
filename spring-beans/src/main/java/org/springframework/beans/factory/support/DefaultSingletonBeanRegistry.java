@@ -205,9 +205,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-		// 从单例缓冲中加载 bean
+		// 从单例缓存中加载 bean
 		Object singletonObject = this.singletonObjects.get(beanName);
-		// 缓存中的 bean 为空，且当前 bean 正在创建
+		/**
+		 * 缓存中的 bean 为空，且bean正在创建中
+		 * 1、isSingletonCurrentlyInCreation 判断该 beanName 对应的 Bean 是否在创建过程中
+		 *    查看private final Set<String> {@link singletonsCurrentlyInCreation) 是否有，该set记录了正在创建bean的beanName
+		 */
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
 				// 从 earlySingletonObjects 获取
