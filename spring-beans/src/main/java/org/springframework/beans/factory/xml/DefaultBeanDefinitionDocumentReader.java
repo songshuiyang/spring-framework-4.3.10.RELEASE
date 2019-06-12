@@ -75,8 +75,13 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	/**
+	 * 里面包含了 XmlBeanDefinitionReader
+	 */
 	private XmlReaderContext readerContext;
-
+	/**
+	 * 又委托给BeanDefinitionParserDelegate进行解析
+	 */
 	private BeanDefinitionParserDelegate delegate;
 
 
@@ -135,6 +140,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 						logger.info("Skipped XML bean definition file due to specified profiles [" + profileSpec +
 								"] not matching: " + getReaderContext().getResource());
 					}
+					// 直接返回不解析
 					return;
 				}
 			}
@@ -163,7 +169,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * @param root the DOM root element of the document
 	 */
 	protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate delegate) {
-		// 如果是默认命名空间 xmlns="http://www.springframework.org/schema/beans"
+		// 如果是默认命名空间 在这个命名空间下的标签xmlns="http://www.springframework.org/schema/beans"就是默认的
 		if (delegate.isDefaultNamespace(root)) {
 			NodeList nl = root.getChildNodes();
 			for (int i = 0; i < nl.getLength(); i++) {

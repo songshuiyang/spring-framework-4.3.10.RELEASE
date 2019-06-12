@@ -23,6 +23,11 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 
 /**
+ * 命名空间处理器，我们就可以根据需求自己来处理我们设置的标签元素。
+ * eg:
+ * 	可能需要配置如<aop:config />这样的标签, 在配置这个标签之前，通常我们需要在xml中引入这个aop所在的命名空间，xmlns:aop="http://www.springframework.org/schema/aop"
+ * 	只有通过配置aop的命名空间才会找到AOP标签的处理器{@link org.springframework.aop.config.AopNamespaceHandler}，在AOP的jar中的spring.handlers配置文件中配置了命名空间和命名空间处理器之间的关系。
+ *
  * Base interface used by the {@link DefaultBeanDefinitionDocumentReader}
  * for handling custom namespaces in a Spring XML configuration file.
  *

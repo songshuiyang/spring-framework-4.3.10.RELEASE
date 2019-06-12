@@ -17,6 +17,8 @@
 package org.springframework.beans.factory.xml;
 
 /**
+ * 命名空间处理器，我们就可以根据需求自己来处理我们设置的标签元素。
+ *
  * Used by the {@link org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader} to
  * locate a {@link NamespaceHandler} implementation for a particular namespace URI.
  *

@@ -52,6 +52,9 @@ import org.springframework.util.xml.XmlValidationModeDetector;
 /**
  * 用于XML bean定义的Bean定义读取器。
  *
+ * 这个类只是统筹调度，负责将XML文件转化成Document对象，
+ * 真正的解析注册工作是在 {@link DefaultBeanDefinitionDocumentReader}类中
+ *
  * Bean definition reader for XML bean definitions.
  * Delegates the actual XML document reading to an implementation
  * of the {@link BeanDefinitionDocumentReader} interface.
@@ -115,6 +118,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	private SourceExtractor sourceExtractor = new NullSourceExtractor();
 
 	private NamespaceHandlerResolver namespaceHandlerResolver;
+
 
 	private DocumentLoader documentLoader = new DefaultDocumentLoader();
 
@@ -528,7 +532,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
 		/**
-		 * 使用DefaultBeanDefinitionDocumentReader实例化BeanDefinitionDocumentReader，在实例化BeanDefinitionDocumentReader的时候会将
+		 * 使用DefaultBeanDefinitionDocumentReader实例化BeanDefinitionDocumentReader，
+		 * 加载并注册bean将委托 {@link BeanDefinitionDocumentReader} 类来负责，BeanDefinitionDocumentReader 隐居只是将作为对象传给{@link BeanDefinitionDocumentReader}
 		 *
 		 * @see DefaultBeanDefinitionDocumentReader
 		 *

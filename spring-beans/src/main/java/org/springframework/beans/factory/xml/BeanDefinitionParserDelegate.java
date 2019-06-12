@@ -1419,12 +1419,15 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	public BeanDefinition parseCustomElement(Element ele, BeanDefinition containingBd) {
+		// 获取xml配置文件中的命名空间http://www.springframework.org/schema/aop
 		String namespaceUri = getNamespaceURI(ele);
+		// 根据命名空间找到命名空间处理类AopNamespaceHandler
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);
 			return null;
 		}
+		// 解析命名空间支持的标签
 		return handler.parse(ele, new ParserContext(this.readerContext, this, containingBd));
 	}
 
