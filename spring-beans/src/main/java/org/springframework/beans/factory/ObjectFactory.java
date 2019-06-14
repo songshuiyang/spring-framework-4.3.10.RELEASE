@@ -19,6 +19,8 @@ package org.springframework.beans.factory;
 import org.springframework.beans.BeansException;
 
 /**
+ * Object工厂类
+ *
  * Defines a factory which can return an Object instance
  * (possibly shared or independent) when invoked.
  *

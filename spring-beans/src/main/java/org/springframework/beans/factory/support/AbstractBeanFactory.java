@@ -338,7 +338,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						@Override
 						public Object getObject() throws BeansException {
 							try {
-								// 创建bean
+								// 在getSingleton()方法会调用
 								return createBean(beanName, mbd, args);
 							}
 							catch (BeansException ex) {

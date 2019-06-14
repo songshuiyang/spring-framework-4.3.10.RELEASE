@@ -130,10 +130,16 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Map between containing bean names: bean name --> Set of bean names that the bean contains */
 	private final Map<String, Set<String>> containedBeanMap = new ConcurrentHashMap<String, Set<String>>(16);
 
-	/** Map between dependent bean names: bean name --> Set of dependent bean names */
+	/**
+	 * Map between dependent bean names: bean name --> Set of dependent bean names
+	 * 保存的是依赖 beanName 之间的映射关系：beanName - > 依赖 beanName 的集合
+	 * */
 	private final Map<String, Set<String>> dependentBeanMap = new ConcurrentHashMap<String, Set<String>>(64);
 
-	/** Map between depending bean names: bean name --> Set of bean names for the bean's dependencies */
+	/**
+	 * Map between depending bean names: bean name --> Set of bean names for the bean's dependencies
+	 * 保存的是依赖 beanName 之间的映射关系：依赖 beanName - > beanName 的集合
+	 * */
 	private final Map<String, Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<String, Set<String>>(64);
 
 
@@ -263,7 +269,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<Exception>();
 				}
 				try {
-					// 初始化bean
+					// 真正获取单例 bean 的方法
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}
