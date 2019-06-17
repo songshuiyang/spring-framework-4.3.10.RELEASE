@@ -84,18 +84,19 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Cache of singleton objects: bean name --> bean instance
-	 * 存放的是单例 bean 的映射
+	 * 存放的是单例 bean 的映射 三级缓存
 	 * */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<String, Object>(256);
 
 	/**
 	 * Cache of singleton factories: bean name --> ObjectFactory
-	 * 存放的是 ObjectFactory
+	 * 单例对象工厂的cache 一级缓存
 	 * */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<String, ObjectFactory<?>>(16);
 
 	/** Cache of early singleton objects: bean name --> bean instance
-	 * 存放的是早期的 bean
+	 * 提前暴光的单例对象的Cache 二级缓存
+	 *
 	 * 1、它与 {@link #singletonFactories} 区别在于 earlySingletonObjects 中存放的 bean 不一定是完整。
 	 * 2、从 {@link #getSingleton(String)} 方法中，我们可以了解，bean 在创建过程中就已经加入到 earlySingletonObjects 中了。
 	 * 所以当在 bean 的创建过程中，就可以通过 getBean() 方法获取。
@@ -103,7 +104,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<String, Object>(16);
 
-	/** Set of registered singletons, containing the bean names in registration order */
+	/**
+	 * 已经注册过的单例bean name
+	 * Set of registered singletons, containing the bean names in registration order
+	 * */
 	private final Set<String> registeredSingletons = new LinkedHashSet<String>(256);
 
 	/**
@@ -228,6 +232,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 					if (singletonFactory != null) {
 						singletonObject = singletonFactory.getObject();
+						// 其实也就是从三级缓存移动到了二级缓存。
 						this.earlySingletonObjects.put(beanName, singletonObject);
 						this.singletonFactories.remove(beanName);
 					}

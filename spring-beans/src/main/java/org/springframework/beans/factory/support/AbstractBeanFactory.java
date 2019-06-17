@@ -274,7 +274,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		else { // 在缓存中没有
 
 			// 只有单例情况下才会尝试解决循依赖（如果存在A中有B属性，B中有A属性，那么当依赖注入的时候，就会产生当A还未创建完的时候因为对于B的创建再次创建A，造成循环依赖）
-			// 在原型模式下如果存在循环依赖则会抛出异常。
+			// 在原型模式下如果存在循环依赖则会抛出异常。因为Spring容器不进行缓存"prototype"作用域的bean，因此无法提前暴露一个创建中的bean。
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
 			if (isPrototypeCurrentlyInCreation(beanName)) {
@@ -1057,6 +1057,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 检查该 beanName 是否处于原型模式下的循环依赖，其实检测逻辑和单例模式一样，
+	 * 一个“集合”存放着正在创建的 Bean ，从该集合中进行判断即可，只不过单例模式
+	 * 的“集合”为 Set ，而原型模式的则是 ThreadLocal
 	 * Return whether the specified prototype bean is currently in creation
 	 * (within the current thread).
 	 * @param beanName the name of the bean
