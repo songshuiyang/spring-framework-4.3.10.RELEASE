@@ -1273,6 +1273,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean continueWithPropertyPopulation = true;
 		/**
 		 * 给InstantiationAwareBeanPostProcessors最后一次机会在属性设置前来改变bean
+		 * 此过程可以控制 Spring 是否继续进行属性填充。
 		 * 如：可以用来支持属性注入的类型
 		 */
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
@@ -1291,7 +1292,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (!continueWithPropertyPopulation) {
 			return;
 		}
-
+		// 据注入类型（ byName / byType ）的不同，调用不同的方法来注入属性值
 		if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME ||
 				mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
 			// 存入PropertyValues中

@@ -84,18 +84,20 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Cache of singleton objects: bean name --> bean instance
-	 * 存放的是单例 bean 的映射 三级缓存
+	 * 存放的是单例 bean 的映射 一级缓存
 	 * */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<String, Object>(256);
 
 	/**
 	 * Cache of singleton factories: bean name --> ObjectFactory
-	 * 单例对象工厂的cache 一级缓存
+	 * 单例对象工厂的cache 三级缓存
 	 * */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<String, ObjectFactory<?>>(16);
 
 	/** Cache of early singleton objects: bean name --> bean instance
 	 * 提前暴光的单例对象的Cache 二级缓存
+	 *
+	 * 二级缓存存在的意义，就是缓存三级缓存中的 ObjectFactory 的 #getObject() 方法的执行结果，提早曝光的单例 Bean 对象。
 	 *
 	 * 1、它与 {@link #singletonFactories} 区别在于 earlySingletonObjects 中存放的 bean 不一定是完整。
 	 * 2、从 {@link #getSingleton(String)} 方法中，我们可以了解，bean 在创建过程中就已经加入到 earlySingletonObjects 中了。
@@ -215,7 +217,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-		// 从单例缓存中加载 bean
+		// 首先，从一级缓存 singletonObjects 获取
 		Object singletonObject = this.singletonObjects.get(beanName);
 		/**
 		 * 缓存中的 bean 为空，且bean正在创建中
@@ -224,11 +226,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		 */
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
-				// 从 earlySingletonObjects 获取
+				// 如果，没有且当前指定的 beanName 正在创建，就再从二级缓存 earlySingletonObjects 中获取。
 				singletonObject = this.earlySingletonObjects.get(beanName);
-				// earlySingletonObjects 中没有，且允许提前创建
 				if (singletonObject == null && allowEarlyReference) {
-					// 从 singletonFactories 中获取对应的 ObjectFactory
+					// earlySingletonObjects 中没有，且允许提前创建，则从三级缓存 singletonFactories 获取。
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 					if (singletonFactory != null) {
 						singletonObject = singletonFactory.getObject();
