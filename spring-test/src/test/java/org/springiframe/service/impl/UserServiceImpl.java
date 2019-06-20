@@ -14,6 +14,8 @@ import org.springiframe.service.UserService;
 @Service
 public class UserServiceImpl implements UserService{
 
+    @Autowired User user;
+
     @Autowired
     private RoleService roleService;
 

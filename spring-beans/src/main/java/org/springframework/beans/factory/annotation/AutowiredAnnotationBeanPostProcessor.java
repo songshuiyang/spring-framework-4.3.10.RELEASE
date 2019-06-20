@@ -68,6 +68,10 @@ import org.springframework.util.StringUtils;
 /**
  * @Autowired 注解处理器
  *
+ * 1、支持@Autowired、@Value、@Inject注解用于依赖注入
+ * 2、使用了"context:annotation-config" and "context:component-scan" XML 标签将会注册该类
+ * 3、BeanPostProcessor的实现类
+ *
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} implementation
  * that autowires annotated fields, setter methods and arbitrary config methods.
  * Such members to be injected are detected through a Java 5 annotation: by default,
@@ -143,6 +147,8 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 
 
 	/**
+	 * 构造函数中定义要处理的注解
+	 *
 	 * Create a new AutowiredAnnotationBeanPostProcessor
 	 * for Spring's standard {@link Autowired} annotation.
 	 * <p>Also supports JSR-330's {@link javax.inject.Inject} annotation, if available.
@@ -399,7 +405,14 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		}
 	}
 
-
+	/**
+	 * 获取注入元数据信息，这里做了一下缓存
+	 *
+	 * @param beanName
+	 * @param clazz
+	 * @param pvs
+	 * @return
+	 */
 	private InjectionMetadata findAutowiringMetadata(String beanName, Class<?> clazz, PropertyValues pvs) {
 		// Fall back to class name as cache key, for backwards compatibility with custom callers.
 		String cacheKey = (StringUtils.hasLength(beanName) ? beanName : clazz.getName());
@@ -427,20 +440,23 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		return metadata;
 	}
 
-	private InjectionMetadata buildAutowiringMetadata(final Class<?> clazz) {
-		// 找到哪些属性需要被自动装配，也就是查找被@Autowired注解标记的元素
+	/**
+	 * 找到哪些属性需要被自动装配，也就是查找被@Autowired、@Value、@Inject注解标记的元素，封装为InjectionMetadata
+	 * @param clazz
+	 * @return
+	 */
+	public InjectionMetadata buildAutowiringMetadata(final Class<?> clazz) {
+		// 存放哪些属性需要被自动装配
 		LinkedList<InjectionMetadata.InjectedElement> elements = new LinkedList<InjectionMetadata.InjectedElement>();
 		Class<?> targetClass = clazz;
 
 		do {
 			// 这里是循环，因为要考虑到父类的字段及方法
-			final LinkedList<InjectionMetadata.InjectedElement> currElements =
-					new LinkedList<InjectionMetadata.InjectedElement>();
-
+			final LinkedList<InjectionMetadata.InjectedElement> currElements = new LinkedList<InjectionMetadata.InjectedElement>();
 			ReflectionUtils.doWithLocalFields(targetClass, new ReflectionUtils.FieldCallback() {
 				@Override
 				public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-					// 遍历每一个field，找到被@Autowired标识的字段
+					// 遍历每一个field，找到被@Autowired、@Value、@Inject标识的字段
 					AnnotationAttributes ann = findAutowiredAnnotation(field);
 					if (ann != null) {
 						if (Modifier.isStatic(field.getModifiers())) {
@@ -710,6 +726,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 			}
 			if (arguments != null) {
 				try {
+					// 完成注入
 					ReflectionUtils.makeAccessible(method);
 					method.invoke(bean, arguments);
 				}

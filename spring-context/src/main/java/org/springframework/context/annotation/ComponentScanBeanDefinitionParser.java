@@ -160,6 +160,7 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 		}
 		if (annotationConfig) {
 			// 注册多个BeanPostProcessor接口，具体什么可自行查看，返回的是包含BeanPostProcessor接口的beanDefinitionHolder对象集合
+			// 我们的@Autowired注解解析类AutowiredAnnotationBeanPostProcessor就是在这里默认导入的
 			Set<BeanDefinitionHolder> processorDefinitions = AnnotationConfigUtils.registerAnnotationConfigProcessors(readerContext.getRegistry(), source);
 			// 继续装入CompositeComponentDefinition对象
 			for (BeanDefinitionHolder processorDefinition : processorDefinitions) {

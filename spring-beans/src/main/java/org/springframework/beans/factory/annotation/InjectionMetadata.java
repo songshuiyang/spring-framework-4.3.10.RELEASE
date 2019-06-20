@@ -34,6 +34,8 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.util.ReflectionUtils;
 
 /**
+ * 注入元数据,包含了目标`Bean`的`Class`对象,和注入元素(`InjectionElement`)集合
+ *
  * Internal class for managing injection metadata.
  * Not intended for direct use in applications.
  *

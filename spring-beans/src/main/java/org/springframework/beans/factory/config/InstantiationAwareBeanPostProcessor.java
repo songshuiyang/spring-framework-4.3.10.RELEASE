@@ -22,6 +22,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
 
 /**
+ *
+ * 主要作用在于目标对象的实例化过程中需要处理的事情，包括实例化对象的前后过程以及实例的属性设置
+ *
  * Subinterface of {@link BeanPostProcessor} that adds a before-instantiation callback,
  * and a callback after instantiation but before explicit properties are set or
  * autowiring occurs.
@@ -46,6 +49,10 @@ import org.springframework.beans.PropertyValues;
 public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
 	/**
+	 * 是最先执行的方法，它在目标对象实例化之前调用，该方法的返回值类型是Object，我们可以返回任何类型的值。
+	 * 由于这个时候目标对象还未实例化，所以这个返回值可以用来代替原本该生成的目标对象的实例(比如代理对象)。
+	 * 如果该方法的返回值代替原本该生成的目标对象，
+	 *
 	 * Apply this BeanPostProcessor <i>before the target bean gets instantiated</i>.
 	 * The returned bean object may be a proxy to use instead of the target bean,
 	 * effectively suppressing default instantiation of the target bean.
@@ -69,6 +76,9 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException;
 
 	/**
+	 * 在目标对象实例化之后调用，这个时候对象已经被实例化，但是该实例的属性还未被设置都是null
+	 *
+	 *
 	 * Perform operations after the bean has been instantiated, via a constructor or factory method,
 	 * but before Spring property population (from explicit properties or autowiring) occurs.
 	 * <p>This is the ideal callback for performing custom field injection on the given bean
@@ -84,6 +94,9 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException;
 
 	/**
+	 * 对属性值进行修改(这个时候属性值还未被设置，但是我们可以修改原本该设置进去的属性值)。
+	 * 如果 {@link #postProcessAfterInstantiation(java.lang.Object, java.lang.String)}方法返回false，该方法可能不会被调用。可以在该方法内对属性值进行修改
+	 *
 	 * Post-process the given property values before the factory applies them
 	 * to the given bean. Allows for checking whether all dependencies have been
 	 * satisfied, for example based on a "Required" annotation on bean property setters.
