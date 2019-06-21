@@ -121,6 +121,12 @@ configure(allprojects) { project ->
 		options.compilerArgs += "-parameters"
 	}
 
+	sourceSets {
+		test {
+			java.srcDirs = ['src/排除test目录']
+		}
+	}
+	
 	test {
 		systemProperty("java.awt.headless", "true")
 		systemProperty("testGroups", project.properties.get("testGroups"))
@@ -129,7 +135,7 @@ configure(allprojects) { project ->
 		// Since we set scanForTestClasses to false, we need to filter out inner
 		// classes with the "$" pattern; otherwise, using -Dtest.single=MyTests to
 		// run MyTests by itself will fail if MyTests contains any inner classes.
-		exclude(["**/Abstract*.class", '**/*$*'])
+		exclude '*'
 	}
 
 	repositories {
