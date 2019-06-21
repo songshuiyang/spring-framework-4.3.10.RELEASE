@@ -23,6 +23,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 
 /**
+ * 接口定义了 Spring Bean 实例化的策略，根据创建对象情况的不同，提供了三种策略：无参构造方法、有参构造方法、工厂方法
+ *
  * Interface responsible for creating instances corresponding to a root bean definition.
  *
  * <p>This is pulled out into a strategy as various approaches are possible,
@@ -35,6 +37,8 @@ import org.springframework.beans.factory.BeanFactory;
 public interface InstantiationStrategy {
 
 	/**
+	 * 默认构造方法
+	 *
 	 * Return an instance of the bean with the given name in this factory.
 	 * @param bd the bean definition
 	 * @param beanName the name of the bean when it's created in this context.
@@ -48,6 +52,8 @@ public interface InstantiationStrategy {
 			throws BeansException;
 
 	/**
+	 * 指定构造方法
+	 *
 	 * Return an instance of the bean with the given name in this factory,
 	 * creating it via the given constructor.
 	 * @param bd the bean definition
@@ -64,6 +70,8 @@ public interface InstantiationStrategy {
 			Constructor<?> ctor, Object... args) throws BeansException;
 
 	/**
+	 * 工厂方法
+	 *
 	 * Return an instance of the bean with the given name in this factory,
 	 * creating it via the given factory method.
 	 * @param bd the bean definition
