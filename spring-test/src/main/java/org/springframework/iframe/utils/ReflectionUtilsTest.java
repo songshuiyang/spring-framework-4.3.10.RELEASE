@@ -1,9 +1,9 @@
-package org.springiframe.utils;
+package org.springframework.iframe.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.springframework.iframe.entity.User;
 import org.springframework.util.ReflectionUtils;
-import org.springiframe.entity.User;
 
 import java.lang.reflect.Field;
 

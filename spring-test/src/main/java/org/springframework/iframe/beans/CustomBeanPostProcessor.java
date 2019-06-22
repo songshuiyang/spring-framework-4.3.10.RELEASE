@@ -1,4 +1,4 @@
-package org.springiframe.beans;
+package org.springframework.iframe.beans;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @date 2019/6/20 11:14
  */
 @Slf4j
-@Component
+//@Component
 public class CustomBeanPostProcessor implements BeanPostProcessor {
 
     @Override

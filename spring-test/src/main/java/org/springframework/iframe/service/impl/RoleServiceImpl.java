@@ -1,8 +1,9 @@
-package org.springiframe.service.impl;
+package org.springframework.iframe.service.impl;
 
+import org.springframework.iframe.entity.Role;
+import org.springframework.iframe.service.RoleService;
 import org.springframework.stereotype.Service;
-import org.springiframe.entity.Role;
-import org.springiframe.service.RoleService;
+
 
 /**
  * @author songshuiyang

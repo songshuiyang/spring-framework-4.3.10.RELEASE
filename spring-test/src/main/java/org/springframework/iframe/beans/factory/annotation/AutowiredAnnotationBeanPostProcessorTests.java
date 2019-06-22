@@ -1,10 +1,10 @@
-package org.springiframe.beans.factory.annotation;
+package org.springframework.iframe.beans.factory.annotation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.annotation.InjectionMetadata;
-import org.springiframe.service.impl.UserServiceImpl;
+import org.springframework.iframe.service.impl.UserServiceImpl;
 
 /**
  * @author songsy

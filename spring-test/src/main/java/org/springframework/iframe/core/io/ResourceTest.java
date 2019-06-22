@@ -1,4 +1,4 @@
-package org.springiframe.core.io;
+package org.springframework.iframe.core.io;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
