@@ -61,23 +61,23 @@ public abstract class AopNamespaceUtils {
 		registerComponentIfNecessary(beanDefinition, parserContext);
 	}
 
+	public static void registerAspectJAnnotationAutoProxyCreatorIfNecessary(
+			ParserContext parserContext, Element sourceElement) {
+		// 关键逻辑 注册或升级AutoProxyCreator定义为beanName为org.springframework.aop.config.internalAutoProxyCreator
+		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(
+				parserContext.getRegistry(), parserContext.extractSource(sourceElement));
+		// 对于proxy-target-class(强制使用CGLIB)以及expose-proxy属性的处理
+		useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);
+		// 注册组件并通知，便于监听器做进一步处理
+		registerComponentIfNecessary(beanDefinition, parserContext);
+	}
+
 	public static void registerAspectJAutoProxyCreatorIfNecessary(
 			ParserContext parserContext, Element sourceElement) {
 
 		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAutoProxyCreatorIfNecessary(
 				parserContext.getRegistry(), parserContext.extractSource(sourceElement));
 		useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);
-		registerComponentIfNecessary(beanDefinition, parserContext);
-	}
-
-	public static void registerAspectJAnnotationAutoProxyCreatorIfNecessary(
-			ParserContext parserContext, Element sourceElement) {
-		// 关键逻辑 注册或升级AutoProxyCreator定义为beanName为org.springframework.aop.config.internalAutoProxyCreator
-		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(
-				parserContext.getRegistry(), parserContext.extractSource(sourceElement));
-		// 对于proxy-target-class以及expose-proxy属性的处理
-		useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);
-		// 注册组件并通知，便于监听器做进一步处理
 		registerComponentIfNecessary(beanDefinition, parserContext);
 	}
 

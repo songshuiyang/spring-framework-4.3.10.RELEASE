@@ -13,6 +13,9 @@ public class Role {
 
     private String roleCole;
 
+    public Role() {
+    }
+
     public Role(String roleName, String roleCole) {
         this.roleName = roleName;
         this.roleCole = roleCole;

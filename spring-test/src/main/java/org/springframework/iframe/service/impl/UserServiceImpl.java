@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByName(String userName) {
         User user = new User(userName,18);
-        Role role = roleService.findRoleByUserName(userName);
-        user.setRole(role);
+        //Role role = roleService.findRoleByUserName(userName);
+        user.setRole(new Role());
         return user;
     }
 

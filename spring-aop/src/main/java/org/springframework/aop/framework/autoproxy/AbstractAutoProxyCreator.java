@@ -337,6 +337,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (beanName != null && this.targetSourcedBeans.contains(beanName)) {
 			return bean;
 		}
+		// 无需增强
 		if (Boolean.FALSE.equals(this.advisedBeans.get(cacheKey))) {
 			return bean;
 		}
@@ -352,7 +353,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// 如果获取到了增强则需要针对增强创建代理
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
-			// 创建代理
+			// 创建代理 1、获取增强方法或者增强器 2、根据获取的增强进行代理
 			Object proxy = createProxy(
 					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
 			this.proxyTypes.put(cacheKey, proxy.getClass());

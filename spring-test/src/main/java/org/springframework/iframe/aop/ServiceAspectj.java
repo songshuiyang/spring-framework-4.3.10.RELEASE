@@ -1,5 +1,6 @@
 package org.springframework.iframe.aop;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -14,11 +15,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-public class Aspectj {
-
+public class ServiceAspectj {
 
     @Pointcut(value = "execution(* org.springframework.iframe.service..*(..))")
-    //@Pointcut(value = "execution (* *.*(..))")
     public void pointcut() {
 
     }
@@ -27,9 +26,14 @@ public class Aspectj {
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         String className = pjp.getSignature().getDeclaringType().getSimpleName();
         String methodName = pjp.getSignature().getName();
-        log.info("{}#{}方法开始执行", className, methodName);
+
+        log.info("=> [request method: {}#{}]",className, methodName);
+        log.info("=> [request body: {}]", JSONObject.toJSONString(pjp.getArgs()));
+
         Object result = pjp.proceed();
-        log.info("{}#{}方法结束执行", className, methodName);
+
+        log.info("=< [response method: {}#{}]",className, methodName);
+        log.info("=< [response result: {} ]", JSONObject.toJSONString(result));
         return result;
     }
 

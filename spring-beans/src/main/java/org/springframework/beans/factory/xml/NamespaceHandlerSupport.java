@@ -47,8 +47,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	 * Stores the {@link BeanDefinitionParser} implementations keyed by the
 	 * local name of the {@link Element Elements} they handle.
 	 */
-	private final Map<String, BeanDefinitionParser> parsers =
-			new HashMap<String, BeanDefinitionParser>();
+	private final Map<String, BeanDefinitionParser> parsers = new HashMap<String, BeanDefinitionParser>();
 
 	/**
 	 * Stores the {@link BeanDefinitionDecorator} implementations keyed by the
@@ -66,6 +65,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 
 
 	/**
+	 * 先找到对应的BeanDefinitionParser 然后执行parse(element, parserContext)方法
 	 * Parses the supplied {@link Element} by delegating to the {@link BeanDefinitionParser} that is
 	 * registered for that {@link Element}.
 	 */
@@ -75,6 +75,9 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	}
 
 	/**
+	 * 根据标签名得到相应的解析类，NamespaceHandler这里起到了一个中介的作用
+	 * {@link parsers} Map<String, BeanDefinitionParser> 存放着所有的解析类，这个
+	 *
 	 * Locates the {@link BeanDefinitionParser} from the register implementations using
 	 * the local name of the supplied {@link Element}.
 	 */

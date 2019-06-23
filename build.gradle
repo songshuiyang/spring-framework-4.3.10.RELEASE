@@ -1002,6 +1002,7 @@ project("spring-test") {
 		compile(project(":spring-oxm"))
 
 		compile("org.projectlombok:lombok:1.18.4")
+		compile("com.alibaba:fastjson:1.2.39")
 
 		compile("junit:junit:${junitVersion}")
 		compile("org.testng:testng:${testngVersion}")
