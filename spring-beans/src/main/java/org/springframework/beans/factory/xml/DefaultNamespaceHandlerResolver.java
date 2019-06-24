@@ -154,13 +154,14 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 			synchronized (this) {
 				if (this.handlerMappings == null) {
 					try {
-						// 在 META-INF/spring.handlers配置文件中有配置
+						// 在 META-INF/spring.handlers配置文件中有配置对应关系
 						Properties mappings = PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
 						if (logger.isDebugEnabled()) {
 							logger.debug("Loaded NamespaceHandler mappings: " + mappings);
 						}
 						Map<String, Object> handlerMappings = new ConcurrentHashMap<String, Object>(mappings.size());
 						CollectionUtils.mergePropertiesIntoMap(mappings, handlerMappings);
+						// 赋值到 Map<String, Object> handlerMappings中
 						this.handlerMappings = handlerMappings;
 					}
 					catch (IOException ex) {
