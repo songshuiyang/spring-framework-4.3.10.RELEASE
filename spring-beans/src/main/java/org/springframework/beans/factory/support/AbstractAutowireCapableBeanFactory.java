@@ -1705,7 +1705,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
-			// 激活用户自定义的init方法
+			// 激活用户自定义的init方法 1、InitializingBean接口afterPropertiesSet方法 2、bean 定义的init-method=""方法
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {
