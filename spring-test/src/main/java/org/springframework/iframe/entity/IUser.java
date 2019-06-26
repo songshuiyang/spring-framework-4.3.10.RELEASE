@@ -15,8 +15,6 @@ public class IUser {
 
     private String password;
 
-    private String nickname;
-
     private Integer age;
 
     private IRole IRole;

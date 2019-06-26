@@ -11,4 +11,8 @@ public interface UserMapper {
 
     IUser selectByPrimaryKey (Integer id);
 
+    int insertSelective (IUser iUser);
+
+    int updateByPrimaryKeySelective (IUser iUser);
+
 }

@@ -17,6 +17,10 @@ public class TransactionTests {
     public void test1 () {
         ClassPathXmlApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("beans/applicationContext.xml");
         UserService userService = xmlApplicationContext.getBean(UserService.class);
+        IUser iUser = new IUser();
+        iUser.setUsername("20190626");
+        iUser.setAge(1);
+        userService.updateUser(iUser);
     }
 
 }

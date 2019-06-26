@@ -11,4 +11,6 @@ public interface UserService {
 
     IUser findUserByName(String userName);
 
+    void updateUser (IUser iUser);
+
 }
