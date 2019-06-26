@@ -1,7 +1,7 @@
 package org.springframework.iframe.service;
 
 
-import org.springframework.iframe.entity.Role;
+import org.springframework.iframe.entity.IRole;
 
 /**
  * @author songshuiyang
@@ -9,6 +9,6 @@ import org.springframework.iframe.entity.Role;
  */
 public interface RoleService {
 
-    Role findRoleByUserName(String userName);
+    IRole findRoleByUserName(String userName);
 
 }

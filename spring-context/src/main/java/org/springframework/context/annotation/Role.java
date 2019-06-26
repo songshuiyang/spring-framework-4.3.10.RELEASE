@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 /**
- * Indicates the 'role' hint for a given bean.
+ * Indicates the 'IRole' hint for a given bean.
  *
  * <p>May be used on any class directly or indirectly annotated with
  * {@link org.springframework.stereotype.Component} or on methods
@@ -35,7 +35,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
  * the default value of {@link BeanDefinition#ROLE_APPLICATION} will apply.
  *
  * <p>If Role is present on a {@link Configuration @Configuration} class,
- * this indicates the role of the configuration class bean definition and
+ * this indicates the IRole of the configuration class bean definition and
  * does not cascade to all @{@code Bean} methods defined within. This behavior
  * is different than that of the @{@link Lazy} annotation, for example.
  *
@@ -52,7 +52,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 public @interface Role {
 
 	/**
-	 * Set the role hint for the associated bean.
+	 * Set the IRole hint for the associated bean.
 	 * @see BeanDefinition#ROLE_APPLICATION
 	 * @see BeanDefinition#ROLE_INFRASTRUCTURE
 	 * @see BeanDefinition#ROLE_SUPPORT

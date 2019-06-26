@@ -1004,6 +1004,12 @@ project("spring-test") {
 		compile("org.projectlombok:lombok:1.18.4")
 		compile("com.alibaba:fastjson:1.2.39")
 
+		compile("org.mybatis:mybatis:3.5.0")
+		compile("org.mybatis:mybatis-spring:2.0.0")
+		compile("mysql:mysql-connector-java:5.1.37")
+		compile("com.github.pagehelper:pagehelper:4.1.6")
+		compile("com.alibaba:druid:1.0.2")
+
 		compile("junit:junit:${junitVersion}")
 		compile("org.testng:testng:${testngVersion}")
 		compile("javax.inject:javax.inject:1")

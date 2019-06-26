@@ -1,8 +1,8 @@
 package org.springframework.iframe.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.iframe.entity.Role;
-import org.springframework.iframe.entity.User;
+import org.springframework.iframe.entity.IRole;
+import org.springframework.iframe.entity.IUser;
 import org.springframework.iframe.service.RoleService;
 import org.springframework.iframe.service.UserService;
 import org.springframework.stereotype.Service;
@@ -16,16 +16,15 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    User user;
-
-    @Autowired
     private RoleService roleService;
 
     @Override
-    public User findUserByName(String userName) {
-        User user = new User(userName,18);
-        //Role role = roleService.findRoleByUserName(userName);
-        user.setRole(new Role());
+    public IUser findUserByName(String userName) {
+        IUser user = new IUser();
+        user.setUsername("songsy");
+        user.setAge(1);
+        //IRole IRole = roleService.findRoleByUserName(userName);
+        user.setIRole(new IRole());
         return user;
     }
 

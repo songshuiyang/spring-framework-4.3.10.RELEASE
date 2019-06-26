@@ -1,6 +1,6 @@
 package org.springframework.iframe.service.impl;
 
-import org.springframework.iframe.entity.Role;
+import org.springframework.iframe.entity.IRole;
 import org.springframework.iframe.service.RoleService;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class RoleServiceImpl implements RoleService {
 
     @Override
-    public Role findRoleByUserName(String userName) {
-        return new Role("超级管理员","admin");
+    public IRole findRoleByUserName(String userName) {
+        return new IRole("超级管理员","admin");
     }
 }

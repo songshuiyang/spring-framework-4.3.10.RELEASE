@@ -1,7 +1,7 @@
 package org.springframework.iframe.service;
 
 
-import org.springframework.iframe.entity.User;
+import org.springframework.iframe.entity.IUser;
 
 /**
  * @author songshuiyang
@@ -9,6 +9,6 @@ import org.springframework.iframe.entity.User;
  */
 public interface UserService {
 
-    User findUserByName(String userName);
+    IUser findUserByName(String userName);
 
 }
