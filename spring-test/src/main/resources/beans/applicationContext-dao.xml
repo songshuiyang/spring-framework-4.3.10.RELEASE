@@ -16,7 +16,7 @@
 
         <!-- 基本属性 url、IUser、password -->
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/iframe?useUnicode=true"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/iframe?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
 
@@ -104,7 +104,7 @@
 
     <tx:annotation-driven proxy-target-class="false" transaction-manager="transactionManager" />
 
-    <!-- 配置事务通知属性 -->
+<!--    &lt;!&ndash; 配置事务通知属性 &ndash;&gt;-->
 <!--    <tx:advice id="txAdvice" transaction-manager="transactionManager">-->
 <!--        &lt;!&ndash; 定义事务传播属性 &ndash;&gt;-->
 <!--        <tx:attributes>-->
@@ -126,7 +126,7 @@
 <!--        </tx:attributes>-->
 <!--    </tx:advice>-->
 
-    <!-- 配置事务切面 -->
+<!--    &lt;!&ndash; 配置事务切面 &ndash;&gt;-->
 <!--    <aop:config>-->
 <!--        <aop:pointcut id="serviceOperation"-->
 <!--                      expression="execution(* org.springframework.iframe.service.*.*(..))"/>-->

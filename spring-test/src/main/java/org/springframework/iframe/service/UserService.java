@@ -2,6 +2,7 @@ package org.springframework.iframe.service;
 
 
 import org.springframework.iframe.entity.IUser;
+import org.springframework.iframe.exception.CouponException;
 
 /**
  * @author songshuiyang
@@ -11,6 +12,10 @@ public interface UserService {
 
     IUser findUserByName(String userName);
 
-    void updateUser (IUser iUser);
+    void updateUserByCompilationException(IUser iUser) throws CouponException;
+
+    void updateUserByCompilationExceptionRollback(IUser iUser) throws CouponException;
+
+    void updateUserByRuntimeException(IUser iUser) throws NullPointerException;
 
 }

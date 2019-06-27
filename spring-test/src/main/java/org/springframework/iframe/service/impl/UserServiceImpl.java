@@ -40,14 +40,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void updateUser (IUser iUser) {
+    @Transactional
+    public void updateUserByCompilationException (IUser iUser) throws CouponException{
         log.info("开启事物");
-        try {
-            userMapper.insertSelective(iUser);
-            throw new CouponException("df");
-        } catch (CouponException e) {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        if (userMapper.insertSelective(iUser) == 1) {
+            throw new CouponException("编译型异常 事物不回滚");
+        }
+        IUser iUser2 = userMapper.selectByPrimaryKey(1);
+        iUser2.setAge(iUser2.getAge() + 1);
+        userMapper.updateByPrimaryKeySelective(iUser2);
+    }
+
+    // TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUserByCompilationExceptionRollback (IUser iUser) throws CouponException{
+        log.info("开启事物");
+        if (userMapper.insertSelective(iUser) == 1) {
+            throw new CouponException("编译型异常 事物会回滚");
+        }
+        IUser iUser2 = userMapper.selectByPrimaryKey(1);
+        iUser2.setAge(iUser2.getAge() + 1);
+        userMapper.updateByPrimaryKeySelective(iUser2);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserByRuntimeException (IUser iUser) throws NullPointerException{
+        log.info("开启事物");
+        if (userMapper.insertSelective(iUser) == 1) {
+            throw new NullPointerException("运行时异常");
         }
         IUser iUser2 = userMapper.selectByPrimaryKey(1);
         iUser2.setAge(iUser2.getAge() + 1);

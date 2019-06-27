@@ -62,6 +62,9 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 
 	private final boolean publicMethodsOnly;
 
+	/**
+	 * 构造方法默认会注册  {@link SpringTransactionAnnotationParser}
+	 */
 	private final Set<TransactionAnnotationParser> annotationParsers;
 
 
