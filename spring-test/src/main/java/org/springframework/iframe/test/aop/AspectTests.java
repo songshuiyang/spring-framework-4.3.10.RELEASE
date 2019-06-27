@@ -15,7 +15,7 @@ public class AspectTests {
 
     @Test
     public void test1 () {
-        ClassPathXmlApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("beans/bean.xml");
+        ClassPathXmlApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("beans/applicationContext.xml");
         UserService userService = xmlApplicationContext.getBean(UserService.class);
         IUser user1 = userService.findUserByName("sd");
         log.info("user1:{}", user1);

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Aspect
-//@Component
+@Component
 public class ServiceAspectj {
 
     @Pointcut(value = "execution(* org.springframework.iframe.service..*(..))")

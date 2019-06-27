@@ -11,7 +11,7 @@
     <bean class="org.springframework.iframe.entity.IUser"></bean>
 
     <!-- ComponentScanBeanDefinitionParser-->
-    <context:component-scan base-package = "org.springframework.iframe.*"/>
+    <context:component-scan base-package = "org.springframework.iframe.service.*"/>
 
     <aop:aspectj-autoproxy/>
 
