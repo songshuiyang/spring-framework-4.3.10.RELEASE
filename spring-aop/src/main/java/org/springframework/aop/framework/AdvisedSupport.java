@@ -483,6 +483,9 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	 * @return List of MethodInterceptors (may also include InterceptorAndDynamicMethodMatchers)
 	 */
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(Method method, Class<?> targetClass) {
+		// 从缓存中寻找该方法的拦截链是否已经获取过（可能被代理对象的某个方法被调用过多次，
+		// 调用第一次就会获取一次，后面多次调用时，则需从缓存中直接获取，无需多次获取，
+		// 这样就会提高性能），如果已经获取过，直接返回
 		MethodCacheKey cacheKey = new MethodCacheKey(method);
 		List<Object> cached = this.methodCache.get(cacheKey);
 		if (cached == null) {

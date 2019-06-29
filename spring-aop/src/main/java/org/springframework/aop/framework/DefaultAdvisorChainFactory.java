@@ -46,12 +46,23 @@ import org.springframework.aop.support.MethodMatchers;
 @SuppressWarnings("serial")
 public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializable {
 
+	/**
+	 * 其实这边就是一个拦截器的过滤，应该我们在生产环境中，我们一般会用正则表达来定义切点（expression），
+	 * 因为并不是每个方法都需要切，会影响性能，所以matches这个方法很重要
+	 *
+	 * @param config the AOP configuration in the form of an Advised object
+	 * @param method the proxied method
+	 * @param targetClass the target class (may be {@code null} to indicate a proxy without
+	 * target object, in which case the method's declaring class is the next best option)
+	 * @return
+	 */
 	@Override
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
 			Advised config, Method method, Class<?> targetClass) {
 
 		// This is somewhat tricky... We have to process introductions first,
 		// but we need to preserve order in the ultimate list.
+		// 先定义了一个拦截链的List大小最大为我们传入advisor的个数
 		List<Object> interceptorList = new ArrayList<Object>(config.getAdvisors().length);
 		Class<?> actualClass = (targetClass != null ? targetClass : method.getDeclaringClass());
 		boolean hasIntroductions = hasMatchingIntroductions(config, actualClass);
