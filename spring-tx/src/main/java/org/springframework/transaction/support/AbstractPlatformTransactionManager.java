@@ -751,12 +751,11 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		try {
 			boolean beforeCompletionInvoked = false;
 			try {
-				// 预留
+				// 预留口子方法执行额外逻辑
 				prepareForCommit(status);
-				//
 				triggerBeforeCommit(status);
-				//
 				triggerBeforeCompletion(status);
+
 				beforeCompletionInvoked = true;
 				boolean globalRollbackOnly = false;
 				if (status.isNewTransaction() || isFailEarlyOnGlobalRollbackOnly()) {

@@ -42,9 +42,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUserByCompilationException (IUser iUser) throws CouponException{
-        log.info("开启事物");
+        log.info("开启事务");
         if (userMapper.insertSelective(iUser) == 1) {
-            throw new CouponException("编译型异常 事物不回滚");
+            throw new CouponException("编译型异常 事务不回滚");
         }
         IUser iUser2 = userMapper.selectByPrimaryKey(1);
         iUser2.setAge(iUser2.getAge() + 1);
@@ -55,9 +55,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateUserByCompilationExceptionRollback (IUser iUser) throws CouponException{
-        log.info("开启事物");
+        log.info("开启事务");
         if (userMapper.insertSelective(iUser) == 1) {
-            throw new CouponException("编译型异常 事物会回滚");
+            throw new CouponException("编译型异常 事务会回滚");
         }
         IUser iUser2 = userMapper.selectByPrimaryKey(1);
         iUser2.setAge(iUser2.getAge() + 1);
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUserByRuntimeException (IUser iUser) throws NullPointerException{
-        log.info("开启事物");
+        log.info("开启事务");
         if (userMapper.insertSelective(iUser) == 1) {
             throw new NullPointerException("运行时异常");
         }

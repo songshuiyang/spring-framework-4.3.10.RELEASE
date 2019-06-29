@@ -16,7 +16,8 @@ public class TransactionTests {
     private final ClassPathXmlApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("beans/applicationContext.xml");
 
     /**
-     * 运行时异常事物处理
+     * 运行时异常事务处理
+     * 事务会回滚
      *
      * @throws Exception
      */
@@ -24,14 +25,14 @@ public class TransactionTests {
     public void runtimeExceptionTransactionTest() throws Exception {
         UserService userService = xmlApplicationContext.getBean(UserService.class);
         IUser iUser = new IUser();
-        iUser.setUsername("运行时异常");
+        iUser.setUsername("运行时异常 事务会回滚");
         iUser.setAge(1);
         userService.updateUserByRuntimeException(iUser);
     }
 
     /**
-     * 编译型异常事物处理
-     * 事物不回滚
+     * 编译型异常事务处理
+     * 事务不回滚
      */
     @Test
     public void compilationExceptionTransactionTest() throws Exception {
@@ -43,14 +44,14 @@ public class TransactionTests {
     }
 
     /**
-     * 编译型异常事物处理
-     * 事物回滚
+     * 编译型异常事务处理
+     * 事务回滚
      */
     @Test
     public void updateUserByCompilationExceptionRollback() throws Exception {
         UserService userService = xmlApplicationContext.getBean(UserService.class);
         IUser iUser = new IUser();
-        iUser.setUsername("编译型异常 事物回滚");
+        iUser.setUsername("编译型异常 事务会回滚");
         iUser.setAge(1);
         userService.updateUserByCompilationExceptionRollback(iUser);
     }
