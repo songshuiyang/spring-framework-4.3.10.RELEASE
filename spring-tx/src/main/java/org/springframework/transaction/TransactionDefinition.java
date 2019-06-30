@@ -19,6 +19,8 @@ package org.springframework.transaction;
 import java.sql.Connection;
 
 /**
+ * @Transactional 注解的属性，会解析成 org.springframework.transaction.TransactionDefinition 对象，即事务定义
+ *
  * Interface that defines Spring-compliant transaction properties.
  * Based on the propagation behavior definitions analogous to EJB CMT attributes.
  *

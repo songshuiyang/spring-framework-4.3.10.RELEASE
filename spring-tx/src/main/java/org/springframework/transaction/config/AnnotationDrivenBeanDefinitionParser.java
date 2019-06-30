@@ -102,18 +102,19 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 	private static class AopAutoProxyConfigurer {
 
 		public static void configureAutoProxyCreator(Element element, ParserContext parserContext) {
+			// 注册 InfrastructureAdvisorAutoProxyCreator bean 这个类继承了 BeanPostProcessor，这里实现了AOP代理对象的创建
 			AopNamespaceUtils.registerAutoProxyCreatorIfNecessary(parserContext, element);
 
 			String txAdvisorBeanName = TransactionManagementConfigUtils.TRANSACTION_ADVISOR_BEAN_NAME;
 			if (!parserContext.getRegistry().containsBeanDefinition(txAdvisorBeanName)) {
 				Object eleSource = parserContext.extractSource(element);
 
-				// 创建 TransactionAttributeSource definition.
+				// 创建 AnnotationTransactionAttributeSource definition.
 				RootBeanDefinition sourceDef = new RootBeanDefinition(
 						"org.springframework.transaction.annotation.AnnotationTransactionAttributeSource");
 				sourceDef.setSource(eleSource);
 				sourceDef.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
-				// 注册TransactionAttributeSource bean，并使用Spring中的定义规则生成beanname
+				// 注册 AnnotationTransactionAttributeSource bean，并使用Spring中的定义规则生成beanname
 				String sourceName = parserContext.getReaderContext().registerWithGeneratedName(sourceDef);
 
 				// 创建 TransactionInterceptor definition.
@@ -127,7 +128,7 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 				// 注册TransactionInterceptor bean，
 				String interceptorName = parserContext.getReaderContext().registerWithGeneratedName(interceptorDef);
 
-				// 创建 TransactionAttributeSourceAdvisor definition.
+				// 创建 BeanFactoryTransactionAttributeSourceAdvisor definition.
 				RootBeanDefinition advisorDef = new RootBeanDefinition(BeanFactoryTransactionAttributeSourceAdvisor.class);
 				advisorDef.setSource(eleSource);
 				advisorDef.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
@@ -138,10 +139,10 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 				if (element.hasAttribute("order")) {
 					advisorDef.getPropertyValues().add("order", element.getAttribute("order"));
 				}
-				// 注册TransactionAttributeSourceAdvisor bean
+				// 注册 BeanFactoryTransactionAttributeSourceAdvisor bean
 				parserContext.getRegistry().registerBeanDefinition(txAdvisorBeanName, advisorDef);
 
-				// 创建CompositeComponentDefinition
+				// 创建 CompositeComponentDefinition
 				CompositeComponentDefinition compositeDef = new CompositeComponentDefinition(element.getTagName(), eleSource);
 				compositeDef.addNestedComponent(new BeanComponentDefinition(sourceDef, sourceName));
 				compositeDef.addNestedComponent(new BeanComponentDefinition(interceptorDef, interceptorName));
