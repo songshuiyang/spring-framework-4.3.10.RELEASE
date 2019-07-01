@@ -292,6 +292,7 @@ public class ContextLoader {
 	 * @see #CONFIG_LOCATION_PARAM
 	 */
 	public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
+		// web.xml中存在多次ContextLoader定义抛异常
 		if (servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
 			throw new IllegalStateException(
 					"Cannot initialize context because there is already a root application context present - " +
@@ -309,6 +310,7 @@ public class ContextLoader {
 			// Store context in local instance variable, to guarantee that
 			// it is available on ServletContext shutdown.
 			if (this.context == null) {
+				// 创建WebApplicationContext
 				this.context = createWebApplicationContext(servletContext);
 			}
 			if (this.context instanceof ConfigurableWebApplicationContext) {
@@ -322,9 +324,11 @@ public class ContextLoader {
 						ApplicationContext parent = loadParentContext(servletContext);
 						cwac.setParent(parent);
 					}
+					// 构造Spring容器
 					configureAndRefreshWebApplicationContext(cwac, servletContext);
 				}
 			}
+			// 将WebApplicationContext记录在servletContext中
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 
 			ClassLoader ccl = Thread.currentThread().getContextClassLoader();
@@ -332,6 +336,7 @@ public class ContextLoader {
 				currentContext = this.context;
 			}
 			else if (ccl != null) {
+				// 映射当前的类加载器与创建的实例到全局变量中currentContextPerThread
 				currentContextPerThread.put(ccl, this.context);
 			}
 
@@ -424,8 +429,15 @@ public class ContextLoader {
 						ObjectUtils.getDisplayString(sc.getContextPath()));
 			}
 		}
-
+		// 在Spring也存一份ServletContext
 		wac.setServletContext(sc);
+		/**
+		 * 读取contextConfigLocation配置路径
+		 * <context-param>
+		 		<param-name>contextConfigLocation</param-name>
+		 		<param-value >classpath:/applicationContext.xml</param-value>
+		 </context-param>
+		 */
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (configLocationParam != null) {
 			wac.setConfigLocation(configLocationParam);
@@ -440,6 +452,7 @@ public class ContextLoader {
 		}
 
 		customizeContext(sc, wac);
+		// 核心 refresh()方法
 		wac.refresh();
 	}
 

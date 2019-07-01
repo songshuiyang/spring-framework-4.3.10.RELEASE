@@ -497,6 +497,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		try {
 			// 初始化 WebApplicationContext (即SpringMVC的IOC容器)
 			this.webApplicationContext = initWebApplicationContext();
+			// 子类覆盖
 			initFrameworkServlet();
 		}
 		catch (ServletException ex) {
@@ -531,6 +532,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		WebApplicationContext wac = null;
 
 		if (this.webApplicationContext != null) {
+			// context实例在构造函数中被注入
 			// A context instance was injected at construction time -> use it
 			wac = this.webApplicationContext;
 			if (wac instanceof ConfigurableWebApplicationContext) {
@@ -544,21 +546,22 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 						// 将 Spring 的容器设为 SpringMVC 容器的父容器
 						cwac.setParent(rootContext);
 					}
+					// 刷新上下文环境
 					configureAndRefreshWebApplicationContext(cwac);
 				}
 			}
 		}
 		if (wac == null) {
+			// 如果 WebApplicationContext 为空，则进行查找，能找到说明上下文已经在别处初始化。
 			// No context instance was injected at construction time -> see if one
 			// has been registered in the servlet context. If one exists, it is assumed
 			// that the parent context (if any) has already been set and that the
 			// user has performed any initialization such as setting the context id
-			// 如果 WebApplicationContext 为空，则进行查找，能找到说明上下文已经在别处初始化。
 			wac = findWebApplicationContext();
 		}
 		if (wac == null) {
-			// No context instance is defined for this servlet -> create a local one
 			// 如果 WebApplicationContext 仍为空，则以 Spring 的容器为父上下文建立一个新的。
+			// No context instance is defined for this servlet -> create a local one
 			wac = createWebApplicationContext(rootContext);
 		}
 
@@ -566,7 +569,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// Either the context is not a ConfigurableApplicationContext with refresh
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
-			// 模版方法，由 DispatcherServlet 实现
+			// 刷新Spring MVC，模版方法，由 DispatcherServlet 实现
 			onRefresh(wac);
 		}
 

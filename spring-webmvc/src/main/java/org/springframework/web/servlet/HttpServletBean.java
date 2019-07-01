@@ -140,9 +140,10 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	}
 
 	/**
+	 * 将配置参数映射到此servlet的bean属性，并调用子类初始化
+	 *
 	 * Map config parameters onto bean properties of this servlet, and
 	 * invoke subclass initialization.
-	 * 将配置参数映射到此servlet的bean属性，并调用子类初始化
 	 * @throws ServletException if bean properties are invalid (or required
 	 * properties are missing), or if subclass initialization fails.
 	 */
@@ -152,7 +153,8 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 			logger.debug("Initializing servlet '" + getServletName() + "'");
 		}
 
-		// 构造过程中会使用ServletConfig对象找出web.xml配置文件中的配置参数并设置到ServletConfigPropertyValues内部
+		// 构造过程中会使用ServletConfig对象找出web.xml配置文件中的配置参数 比如web.xml配置的<init-param >
+		// 并设置到ServletConfigPropertyValues内部
 		// Set bean properties from init parameters.
 		PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
 		if (!pvs.isEmpty()) {

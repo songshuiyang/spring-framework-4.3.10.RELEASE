@@ -281,6 +281,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// This is currently strictly internal and not meant to be customized
 		// by application developers.
 		try {
+			// DEFAULT_STRATEGIES_PATH: DispatcherServlet.properties
 			ClassPathResource resource = new ClassPathResource(DEFAULT_STRATEGIES_PATH, DispatcherServlet.class);
 			defaultStrategies = PropertiesLoaderUtils.loadProperties(resource);
 		}
@@ -488,11 +489,13 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
-		// 上传组件组件初始化
+		// 上传组件初始化，注册后每个请求会检查是否包含multipart
 		initMultipartResolver(context);
+		// 国际化组件初始化
 		initLocaleResolver(context);
+		// 主题解析器初始化
 		initThemeResolver(context);
-		// 请求映射处理组件初始化
+		// 核心：请求映射处理组件初始化
 		initHandlerMappings(context);
 		// 处理适配器组建初始化
 		initHandlerAdapters(context);
