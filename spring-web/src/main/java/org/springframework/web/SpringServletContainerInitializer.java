@@ -29,6 +29,8 @@ import javax.servlet.annotation.HandlesTypes;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 /**
+ *
+ *
  * Servlet 3.0 {@link ServletContainerInitializer} designed to support code-based
  * configuration of the servlet container using Spring's {@link WebApplicationInitializer}
  * SPI as opposed to (or possibly in combination with) the traditional
@@ -106,6 +108,8 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
  * @since 3.1
  * @see #onStartup(Set, ServletContext)
  * @see WebApplicationInitializer
+ *
+ * WebApplicationInitializer 类便是 spring 用来初始化 web 环境的委托者类
  */
 @HandlesTypes(WebApplicationInitializer.class)
 public class SpringServletContainerInitializer implements ServletContainerInitializer {

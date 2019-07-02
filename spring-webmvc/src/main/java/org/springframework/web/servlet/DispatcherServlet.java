@@ -60,6 +60,10 @@ import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
 
 /**
+ * HTTP request 核心处理类
+ *
+ * 初始化各个功能的实现类。比如异常处理、视图处理、请求映射处理等。
+ *
  * Central dispatcher for HTTP request handlers/controllers, e.g. for web UI controllers
  * or HTTP-based remote service exporters. Dispatches to registered handlers for processing
  * a web request, providing convenient mapping and exception handling facilities.
@@ -143,8 +147,6 @@ import org.springframework.web.util.WebUtils;
  * application context, rather than creating its own internally. This is useful in Servlet
  * 3.0+ environments, which support programmatic registration of servlet instances.
  * See the {@link #DispatcherServlet(WebApplicationContext)} javadoc for details.
- *
- * 初始化各个功能的实现类。比如异常处理、视图处理、请求映射处理等。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

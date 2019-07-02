@@ -65,6 +65,11 @@ import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
 
 /**
+ *
+ * FrameworkServlet的作用就是将Servlet与Spring容器关联
+ * 将Servlet与Spring容器上下文关联。其实也就是初始化FrameworkServlet的属性webApplicationContext，
+ * 这个属性代表SpringMVC上下文，它有个父类上下文，既web.xml中配置的ContextLoaderListener监听器初始化的容器
+ *
  * Base servlet for Spring's web framework. Provides integration with
  * a Spring application context, in a JavaBean-based overall solution.
  *
@@ -120,10 +125,6 @@ import org.springframework.web.util.WebUtils;
  * application context, rather than creating its own internally. This is useful in Servlet
  * 3.0+ environments, which support programmatic registration of servlet instances. See
  * {@link #FrameworkServlet(WebApplicationContext)} Javadoc for details.
- *
- * FrameworkServlet的作用就是将Servlet与Spring容器关联
- * 将Servlet与Spring容器上下文关联。其实也就是初始化FrameworkServlet的属性webApplicationContext，
- * 这个属性代表SpringMVC上下文，它有个父类上下文，既web.xml中配置的ContextLoaderListener监听器初始化的容器
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
