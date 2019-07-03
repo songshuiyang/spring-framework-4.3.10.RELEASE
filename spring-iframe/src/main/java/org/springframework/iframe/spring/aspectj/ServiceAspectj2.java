@@ -1,4 +1,4 @@
-package org.springframework.iframe.aop;
+package org.springframework.iframe.spring.aspectj;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

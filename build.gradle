@@ -984,7 +984,7 @@ project("spring-websocket") {
 }
 
 project("spring-iframe") {
-	description = "调试 Spring Framework 的模块"
+	description = "调试 Spring Framework 的模块 不属于Spring"
 	
 	dependencies {
 		compile(project(":spring-core"))

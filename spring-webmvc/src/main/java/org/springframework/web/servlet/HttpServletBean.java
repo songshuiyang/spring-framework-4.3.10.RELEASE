@@ -16,23 +16,9 @@
 
 package org.springframework.web.servlet;
 
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.PropertyAccessorFactory;
-import org.springframework.beans.PropertyValue;
-import org.springframework.beans.PropertyValues;
+import org.springframework.beans.*;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
@@ -46,7 +32,20 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.ServletContextResourceLoader;
 import org.springframework.web.context.support.StandardServletEnvironment;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
+ * 主要做一些初始化的工作
+ * 	1、将web.xml中配置的参数设置到Servlet中。比如servlet标签的子标签init-param标签中配置的参数。
+ * 	2、触发子类{@link FrameworkServlet#initServletBean() } 用构建及发布WebApplicationContext
+ *
+ *
  * Simple extension of {@link javax.servlet.http.HttpServlet} which treats
  * its config parameters ({@code init-param} entries within the
  * {@code servlet} tag in {@code web.xml}) as bean properties.
@@ -70,8 +69,6 @@ import org.springframework.web.context.support.StandardServletEnvironment;
  * <p>The {@link FrameworkServlet} class is a more specific servlet base
  * class which loads its own application context. FrameworkServlet serves
  * as direct base class of Spring's full-fledged {@link DispatcherServlet}.
- *
- * 主要做一些初始化的工作，将web.xml中配置的参数设置到Servlet中。比如servlet标签的子标签init-param标签中配置的参数。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -154,7 +151,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 		}
 
 		// 构造过程中会使用ServletConfig对象找出web.xml配置文件中的配置参数 比如web.xml配置的<init-param >
-		// 并设置到ServletConfigPropertyValues内部
+		// 并设置到ServletConfig
 		// Set bean properties from init parameters.
 		PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
 		if (!pvs.isEmpty()) {
@@ -175,8 +172,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 				throw ex;
 			}
 		}
-		// 让子类去做一些事情，这种在父类定义在子类实现的方式叫做模版方法模式
-		// Let subclasses do whatever initialization they like
+		// 触发子类{@link FrameworkServlet#initServletBean() } 用构建及发布WebApplicationContext
 		initServletBean();
 
 		if (logger.isDebugEnabled()) {

@@ -16,24 +16,8 @@
 
 package org.springframework.web.servlet;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationContextException;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.*;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.SourceFilteringListener;
 import org.springframework.context.i18n.LocaleContext;
@@ -64,11 +48,21 @@ import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 /**
- *
- * FrameworkServlet的作用就是将Servlet与Spring容器关联
- * 将Servlet与Spring容器上下文关联。其实也就是初始化FrameworkServlet的属性webApplicationContext，
- * 这个属性代表SpringMVC上下文，它有个父类上下文，既web.xml中配置的ContextLoaderListener监听器初始化的容器
+ * FrameworkServlet 的作用就是将 Servlet 与 Spring 容器关联
+ * 将 Servlet 与 Spring 容器上下文关联。其实也就是初始化 FrameworkServlet 的属性 webApplicationContext ，
+ * 这个属性代表 SpringMVC 上下文，它有个父类上下文，既 web.xml 中配置的 ContextLoaderListener 监听器初始化的容器
  *
  * Base servlet for Spring's web framework. Provides integration with
  * a Spring application context, in a JavaBean-based overall solution.
@@ -168,8 +162,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 
 	/** Checking for Servlet 3.0+ HttpServletResponse.getStatus() */
-	private static final boolean responseGetStatusAvailable =
-			ClassUtils.hasMethod(HttpServletResponse.class, "getStatus");
+	private static final boolean responseGetStatusAvailable = ClassUtils.hasMethod(HttpServletResponse.class, "getStatus");
 
 
 	/** ServletContext attribute to find the WebApplicationContext in */
@@ -527,9 +520,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @see #setContextConfigLocation
 	 */
 	protected WebApplicationContext initWebApplicationContext() {
-		// 获取ContextLoaderListener 初始化并注册在 ServletContext 中的根容器，即 Spring 的容器
-		WebApplicationContext rootContext =
-				WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		// 获取ContextLoaderListener 初始化并注册在 ServletContext 中的Spring 的容器容器，这里是父容器
+		WebApplicationContext rootContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		WebApplicationContext wac = null;
 
 		if (this.webApplicationContext != null) {
@@ -603,8 +595,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		if (attrName == null) {
 			return null;
 		}
-		WebApplicationContext wac =
-				WebApplicationContextUtils.getWebApplicationContext(getServletContext(), attrName);
+		WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(getServletContext(), attrName);
 		if (wac == null) {
 			throw new IllegalStateException("No WebApplicationContext found: initializer not registered?");
 		}
@@ -644,6 +635,14 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 		wac.setEnvironment(getEnvironment());
 		wac.setParent(parent);
+		/**
+		 * 	  这里配置了ConfigLocation
+		 *
+		 *    <init-param >
+		 *       <param-name >contextConfigLocation</param-name>
+		 *       <param-value >classpath:/spring-mvc.xml</param-value>
+		 *     </init-param>
+		 */
 		wac.setConfigLocation(getContextConfigLocation());
 
 		configureAndRefreshWebApplicationContext(wac);
@@ -1051,8 +1050,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * the previously bound instance (or not binding any, if none bound before)
 	 * @see RequestContextHolder#setRequestAttributes
 	 */
-	protected ServletRequestAttributes buildRequestAttributes(
-			HttpServletRequest request, HttpServletResponse response, RequestAttributes previousAttributes) {
+	protected ServletRequestAttributes buildRequestAttributes(HttpServletRequest request, HttpServletResponse response, RequestAttributes previousAttributes) {
 
 		if (previousAttributes == null || previousAttributes instanceof ServletRequestAttributes) {
 			return new ServletRequestAttributes(request, response);
@@ -1062,8 +1060,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		}
 	}
 
-	private void initContextHolders(
-			HttpServletRequest request, LocaleContext localeContext, RequestAttributes requestAttributes) {
+	private void initContextHolders(HttpServletRequest request, LocaleContext localeContext, RequestAttributes requestAttributes) {
 
 		if (localeContext != null) {
 			LocaleContextHolder.setLocaleContext(localeContext, this.threadContextInheritable);
