@@ -206,6 +206,7 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 						else {
 							body = getAdvice().handleEmptyBody(null, inputMessage, parameter, targetType, converterType);
 						}
+						// 找到合适的就break
 						break;
 					}
 				}

@@ -719,6 +719,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	protected ModelAndView handleInternal(HttpServletRequest request,
 										  HttpServletResponse response, HandlerMethod handlerMethod) throws Exception {
 		ModelAndView mav;
+		// 检查是否支持当前的请求，如果不支持则抛出异常
 		checkRequest(request);
 		// Execute invokeHandlerMethod in synchronized block if required.
 		if (this.synchronizeOnSession) {
