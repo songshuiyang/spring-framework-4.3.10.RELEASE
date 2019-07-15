@@ -85,6 +85,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * 维护着 SpringMVC 中所有的 RequestMapingInfo 与 HandlerMethod 的映射关系。
+	 *
+	 * {@link AbstractHandlerMethodMapping#afterPropertiesSet()}
 	 */
 	private final MappingRegistry mappingRegistry = new MappingRegistry();
 
@@ -354,7 +356,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		// 根据URL来获取,springMVC会在初始化的时候建立URL和相应RequestMappingInfo的映射。如果不是restful接口，这里就可以直接获取到了
 		List<T> directPathMatches = this.mappingRegistry.getMappingsByUrl(lookupPath);
 		if (directPathMatches != null) {
-			// 匹配校验
+			// 匹配校验 根据directPathMatches获取到List<Match> matches中
 			addMatchingMappings(directPathMatches, matches, request);
 		}
 		if (matches.isEmpty()) {
