@@ -16,21 +16,6 @@
 
 package org.springframework.web.servlet.handler;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -44,8 +29,16 @@ import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 /**
- * 将Method作为Handler来使用的，是我们使用最多的一种Handler
+ * 这是`HandlerMapping`的一个基本实现类，该类定义了请求与`HandlerMethod`实例的映射关系，是我们使用最多的一种Handler
+ *
  * Abstract base class for {@link HandlerMapping} implementations that define
  * a mapping between a request and a {@link HandlerMethod}.
  *
@@ -181,6 +174,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	// Handler method detection
 
 	/**
+	 * 检查所有的 HandlerMethod，并存放在 {@link mappingRegistry}
+	 *
 	 * Detects handler methods at initialization.
 	 */
 	@Override
@@ -202,7 +197,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		String[] beanNames = (this.detectHandlerMethodsInAncestorContexts ?
 				BeanFactoryUtils.beanNamesForTypeIncludingAncestors(getApplicationContext(), Object.class) :
 				getApplicationContext().getBeanNamesForType(Object.class));
-
+		// 循环beanNames
 		for (String beanName : beanNames) {
 			if (!beanName.startsWith(SCOPED_TARGET_NAME_PREFIX)) {
 				// 得到bean类型
@@ -237,7 +232,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				getApplicationContext().getType((String) handler) : handler.getClass());
 		final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
-		// 这里获取 RequestMapping方法，会过滤掉普通方法
+		// 这里获取有@RequestMapping的方法，会过滤掉普通方法
 		Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
 				new MethodIntrospector.MetadataLookup<T>() {
 					@Override
@@ -345,6 +340,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * 查找当前request请求 最为匹配的处理方法HandlerMethod，如果有多个匹配结果，则选择最佳匹配结果
+	 *
 	 * Look up the best-matching handler method for the current request.
 	 * If multiple matches are found, the best match is selected.
 	 * @param lookupPath mapping lookup path within the current servlet mapping
@@ -490,6 +486,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 
 	/**
+	 * 维护着 SpringMVC 中所有的 RequestMapingInfo 与 HandlerMethod 的映射关系。
+	 *
 	 * A registry that maintains all mappings to handler methods, exposing methods
 	 * to perform lookups and providing concurrent access.
 	 *
@@ -503,11 +501,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		private final MultiValueMap<String, T> urlLookup = new LinkedMultiValueMap<String, T>();
 
-		private final Map<String, List<HandlerMethod>> nameLookup =
-				new ConcurrentHashMap<String, List<HandlerMethod>>();
+		private final Map<String, List<HandlerMethod>> nameLookup = new ConcurrentHashMap<String, List<HandlerMethod>>();
 
-		private final Map<HandlerMethod, CorsConfiguration> corsLookup =
-				new ConcurrentHashMap<HandlerMethod, CorsConfiguration>();
+		private final Map<HandlerMethod, CorsConfiguration> corsLookup = new ConcurrentHashMap<HandlerMethod, CorsConfiguration>();
 
 		private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 

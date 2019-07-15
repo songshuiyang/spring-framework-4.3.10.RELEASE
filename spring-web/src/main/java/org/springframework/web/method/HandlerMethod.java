@@ -16,12 +16,8 @@
 
 package org.springframework.web.method;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.GenericTypeResolver;
@@ -33,8 +29,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 /**
- * 封装了方法调用相关信息,子类还提供调用,参数准备和返回值处理的职责
+ * 这个类封装了处理器实例`（Controller Bean）`和 处理方法实例`（Method）`以及方法参数数组`（MethodParameter[]）`
  *
  * Encapsulates information about a handler method consisting of a
  * {@linkplain #getMethod() method} and a {@linkplain #getBean() bean}.
@@ -161,7 +160,11 @@ public class HandlerMethod {
 		this.resolvedFromHandlerMethod = handlerMethod;
 	}
 
-
+	/**
+	 * 初始化方法参数
+	 *
+	 * @return
+	 */
 	private MethodParameter[] initMethodParameters() {
 		int count = this.bridgedMethod.getParameterTypes().length;
 		MethodParameter[] result = new MethodParameter[count];

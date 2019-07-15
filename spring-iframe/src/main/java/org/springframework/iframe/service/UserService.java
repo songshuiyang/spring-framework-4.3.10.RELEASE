@@ -14,6 +14,14 @@ public interface UserService {
 
     List<IUser> findAll();
 
+    IUser selectByPrimaryKey(Integer id);
+
+    int insertSelective(IUser iUser);
+
+    int updateByPrimaryKeySelective(IUser iUser);
+
+    int deleteByPrimaryKey(Integer id);
+
     IUser findUserByName(String userName);
 
     void updateUserByCompilationException(IUser iUser) throws CouponException;

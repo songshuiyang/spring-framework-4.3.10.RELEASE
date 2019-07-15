@@ -19,4 +19,6 @@ public interface UserMapper {
 
     int updateByPrimaryKeySelective(IUser iUser);
 
+    int deleteByPrimaryKey(Integer id);
+
 }

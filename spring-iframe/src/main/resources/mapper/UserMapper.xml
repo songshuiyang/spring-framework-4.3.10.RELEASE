@@ -75,6 +75,12 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <select id="deleteByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        DELETE
+        FROM sys_user
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+
     <!--<select id="findPageList" parameterType="IUser" resultType="IUser">
         SELECT
         <include refid="Base_Column_List"/>

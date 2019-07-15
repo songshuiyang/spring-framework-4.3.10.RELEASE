@@ -19,6 +19,8 @@ package org.springframework.web.servlet;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 用于定义request请求及处理类的映射关系
+ *
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
  *

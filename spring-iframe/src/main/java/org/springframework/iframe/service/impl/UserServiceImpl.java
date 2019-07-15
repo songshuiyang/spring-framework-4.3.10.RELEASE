@@ -1,7 +1,6 @@
 package org.springframework.iframe.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.iframe.entity.IRole;
 import org.springframework.iframe.entity.IUser;
@@ -33,6 +32,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<IUser> findAll() {
         return userMapper.findAll();
+    }
+
+    @Override
+    public IUser selectByPrimaryKey(Integer id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int insertSelective(IUser iUser) {
+        return userMapper.insertSelective(iUser);
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(IUser iUser) {
+        return userMapper.updateByPrimaryKeySelective(iUser);
+    }
+
+    @Override
+    public int deleteByPrimaryKey(Integer id) {
+        return userMapper.deleteByPrimaryKey(id);
     }
 
 
