@@ -17,5 +17,5 @@ public class IUser {
 
     private Integer age;
 
-    private IRole IRole;
+    private IRole iRole;
 }

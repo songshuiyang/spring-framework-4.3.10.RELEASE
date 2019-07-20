@@ -38,9 +38,10 @@ public class UserController extends BaseController {
         return success();
     }
 
-    @GetMapping("/view/{id}")
-    public ResponseMO view(@PathVariable Integer id) {
+    @GetMapping("/view/{id}/{name}")
+    public ResponseMO view(@PathVariable Integer id, @PathVariable String name) {
         IUser iUser = userService.selectByPrimaryKey(id);
+        iUser.setUsername(name);
         return success(iUser);
     }
 

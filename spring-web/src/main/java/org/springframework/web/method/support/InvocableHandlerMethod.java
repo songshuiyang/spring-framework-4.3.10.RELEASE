@@ -16,10 +16,6 @@
 
 package org.springframework.web.method.support;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -30,6 +26,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.HandlerMethod;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * 在 HandlerMethod类的基础上添加了方法调用功能及注册了参数解析组件
@@ -136,6 +136,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	public Object invokeForRequest(NativeWebRequest request, org.springframework.web.method.support.ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
 
+		// 这里得到了方法参数值
 		Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Invoking '" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
@@ -152,7 +153,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	/**
 	 * 根据当前请求获取方法的请求参数
 	 * Get the method argument values for the current request.
-	 * 两种解析形式 1： providedArgs 2：argumentResolvers 在RequestMappingHandlerAdapter中只有argumentResolvers解析
+	 * 先是判断相应类型的参数已经在providedArgs中提供了，如果有的话就是直接返回，否则则使用argumentResolvers解析
 	 *
 	 */
 	private Object[] getMethodArgumentValues(NativeWebRequest request, org.springframework.web.method.support.ModelAndViewContainer mavContainer,
