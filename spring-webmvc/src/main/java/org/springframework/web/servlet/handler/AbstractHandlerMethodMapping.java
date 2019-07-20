@@ -386,7 +386,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 							request.getRequestURL() + "': {" + m1 + ", " + m2 + "}");
 				}
 			}
-			// 设置HttpServletRequest值
+			// 设置HttpServletRequest值 如解析url上的属性值
 			handleMatch(bestMatch.mapping, lookupPath, request);
 			return bestMatch.handlerMethod;
 		}
