@@ -136,17 +136,19 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	public Object invokeForRequest(NativeWebRequest request, org.springframework.web.method.support.ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
 
-		// 这里得到了方法参数值
+		// 1、这里得到了方法参数值
 		Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Invoking '" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
 					"' with arguments " + Arrays.toString(args));
 		}
+		// 2、传入方法参数值并执行方法
 		Object returnValue = doInvoke(args);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Method [" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
 					"] returned [" + returnValue + "]");
 		}
+		// 3、返回结果
 		return returnValue;
 	}
 
