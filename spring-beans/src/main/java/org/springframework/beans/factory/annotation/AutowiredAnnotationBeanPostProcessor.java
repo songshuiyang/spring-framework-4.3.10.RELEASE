@@ -459,6 +459,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 					// 遍历每一个field，找到被@Autowired、@Value、@Inject标识的字段
 					AnnotationAttributes ann = findAutowiredAnnotation(field);
 					if (ann != null) {
+						// 判断是否是static修饰了，不支持
 						if (Modifier.isStatic(field.getModifiers())) {
 							if (logger.isWarnEnabled()) {
 								logger.warn("Autowired annotation is not supported on static fields: " + field);
