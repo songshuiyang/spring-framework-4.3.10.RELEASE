@@ -482,7 +482,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 给BeanPostProcessors一个机会来返回代理来替代真正的实例
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			// 当经过前置处理后的返回结果如果不为空，那么会直接略过后续bean的创建二直接返回结果。这一特性虽然很容易被忽略，但是
-			// 却起着至关重要的作用，我们熟知的AOP功能就是基于这里的判断的
+			// 却起着至关重要的作用
+			// 注意这里`bean`还没有实例化还停留在`BeanDefinition`阶段
 			if (bean != null) {
 				return bean;
 			}
@@ -1033,6 +1034,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 在bean实例化之前偷天换日
+	 * @see InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation
+	 *
 	 * Apply before-instantiation post-processors, resolving whether there is a
 	 * before-instantiation shortcut for the specified bean.
 	 * @param beanName the name of the bean

@@ -17,6 +17,12 @@
 package org.springframework.context;
 
 /**
+ *
+ * LifeCycle定义Spring容器对象的生命周期，任何spring管理对象都可以实现该接口。
+ * 然后，当ApplicationContext本身接收启动和停止信号(例如在运行时停止/重启场景)时，
+ * spring容器将在容器上下文中找出所有实现了LifeCycle及其子类接口的类，并一一调用它们实现的类。
+ * spring是通过委托给生命周期处理器LifecycleProcessor来实现这一点的。
+ *
  * A common interface defining methods for start/stop lifecycle control.
  * The typical use case for this is to control asynchronous processing.
  * <b>NOTE: This interface does not imply specific auto-startup semantics.

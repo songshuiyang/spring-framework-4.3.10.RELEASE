@@ -50,7 +50,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
 	/**
 	 * 是最先执行的方法，它在目标对象实例化之前调用，该方法的返回值类型是Object，我们可以返回任何类型的值。
-	 * 由于这个时候目标对象还未实例化，所以这个返回值可以用来代替原本该生成的目标对象的实例(比如代理对象)。
+	 * 由于这个时候目标对象还未实例化，所以这个返回值可以用来代替原本该生成的目标对象的实例(比如AOP代理对象)。
 	 * 如果该方法的返回值代替原本该生成的目标对象，
 	 *
 	 * Apply this BeanPostProcessor <i>before the target bean gets instantiated</i>.
