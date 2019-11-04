@@ -1,3 +1,94 @@
+## 为什么要阅读源码
+
+* 站在巨人的肩膀上看世界，看看大佬们是怎么写代码的，一些写代码的模式或者技巧是否可以运用到实际项目中
+* 许多东西不能只停留在使用层面，更要知其所以然，提高自己知识的深度
+* 可以融会贯通，看得越多，知识的互通性的愈发明显，比如一些设计思想，设计模式这些在其他框架也是大量的运用
+
+## 下载并导入源码
+
+* 源码地址 `https://github.com/spring-projects/spring-framework` 选择合适的版本，此版本是`4.3.10.RELEASE`版本
+
+* 配置`gradle`环境
+
+* 详情可见源码父目录下的`import-into-idea.md`说明文档来将源码导入到`IDEA`环境中，执行`import-into-eclipse.bat`脚本将源码可导入至`eclipse`环境中
+
+* 导入到`IDEA`环境中操作步骤
+    * 进入 `spring-framework` 文件夹下，打开`cmd`，输入 `gradlew :spring-oxm:compileTestJava` ，`spring-oxm` 应该预编译，因为它使用重新打包的依赖项，被其他包依赖
+    
+    * 排除 `spring-aspects` 模块 `1、Exclude(Go to File->Project Structure->Modules)` 2、右键`unmark as sources root`让`idea`不认为此目录是源代码文件夹，不然此模块不然在本地编译不过
+    
+    * 执行`gradlew.bat`
+
+## 问题记录
+* 执行`gradle`命令报错
+    * 尝试更换版本，多下几个版本的`gradle`
+
+* 执行`gradle`命令报`错误: 找不到或无法加载主类 org.gradle.wrapper.GradleWrapperMain`
+    * 检查源码目录下是否有 `gradle/wrapper/gradle-wrapper.jar`，如果没有从其他项目中copy一份
+   
+* 执行`gradle`命令报`taskdef class jdiff.JDiffAntTask cannot be found`
+    * 注释该文件的下面代码
+    ```xml
+    ant.taskdef(
+            name: "jdiff",
+            classname: "jdiff.JDiffAntTask",
+            classpath: "${jdiffHome}/antjdiff.jar")
+    ```
+    
+* 有些类`GroovyBeanDefinitionReader` ``GroovyBeanDefinitionReader``编译报错说是找不到
+    * 找到对应`GroovyBeanDefinitionReader`的模块是`spring-beans-groovy` 
+    * 然后在找到`build.gradle`文件将`compile(project(":spring-beans-groovy"))`依赖添加到对于报错的模块中
+        ```java
+        project("spring-context") {
+            description = "Spring Context"
+        
+            apply plugin: "groovy"
+        
+            dependencies {
+                compile(project(":spring-aop"))
+                compile(project(":spring-beans"))
+                compile(project(":spring-beans-groovy"))
+        ```
+
+* 设置测试类不编译，修改文件`build.gradle`，不然每次点击方法在哪里调用都会冒出一堆测试类供你选择
+
+```java
+sourceSets {
+    test {
+        java.srcDirs = ['src/排除test目录']
+    }
+}
+
+test {
+    systemProperty("java.awt.headless", "true")
+    systemProperty("testGroups", project.properties.get("testGroups"))
+    scanForTestClasses = false
+    include(["**/*Tests.class", "**/*Test.class"])
+    // Since we set scanForTestClasses to false, we need to filter out inner
+    // classes with the "$" pattern; otherwise, using -Dtest.single=MyTests to
+    // run MyTests by itself will fail if MyTests contains any inner classes.
+    exclude '*'
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Spring Framework
 The Spring Framework provides a comprehensive programming and configuration
 model for modern Java-based enterprise applications -- on any kind of deployment
