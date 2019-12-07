@@ -70,6 +70,7 @@ import org.springframework.beans.factory.config.Scope;
 import org.springframework.core.DecoratingClassLoader;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.SimpleAliasRegistry;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -242,6 +243,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		/**
 		 * 提取对应的beanName， 这里传递的是 name 方法，不一定就是 beanName，可能是 aliasName
 		 * 也有可能是 FactoryBean FactoryBean会带上&符号，
+		 * 在BeanDefinition阶段时是通过 {@link BeanDefinitionHolder#aliases} 这个字段来向  {@link SimpleAliasRegistry#aliasMap} 注册别名信息的
 		 */
 		final String beanName = transformedBeanName(name);
 		Object bean;
