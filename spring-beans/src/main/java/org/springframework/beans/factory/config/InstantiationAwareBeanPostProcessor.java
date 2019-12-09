@@ -76,7 +76,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException;
 
 	/**
-	 * 在目标对象实例化之后调用，这个时候对象已经被实例化，但是该实例的属性还未被设置都是null
+	 * 在目标对象实例化之后调用，这个时候对象已经被实例化，但是该实例的属性还未被设置都是null，要通过下面那个方法
 	 *
 	 *
 	 * Perform operations after the bean has been instantiated, via a constructor or factory method,

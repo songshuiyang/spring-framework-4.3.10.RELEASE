@@ -160,7 +160,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	 */
 	private Object[] getMethodArgumentValues(NativeWebRequest request, org.springframework.web.method.support.ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
-		// 获取方法的参数，在HanderMethod中
+		// 获取方法的参数，在HandlerMethod中
 		MethodParameter[] parameters = getMethodParameters();
 		// 用于保存解析出参数的值
 		Object[] args = new Object[parameters.length];

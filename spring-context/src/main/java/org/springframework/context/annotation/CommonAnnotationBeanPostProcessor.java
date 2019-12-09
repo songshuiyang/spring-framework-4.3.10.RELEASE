@@ -358,6 +358,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 			final LinkedList<InjectionMetadata.InjectedElement> currElements =
 					new LinkedList<InjectionMetadata.InjectedElement>();
 
+			// 扫描成员变量注解
 			ReflectionUtils.doWithLocalFields(targetClass, new ReflectionUtils.FieldCallback() {
 				@Override
 				public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
@@ -365,18 +366,21 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 						if (Modifier.isStatic(field.getModifiers())) {
 							throw new IllegalStateException("@WebServiceRef annotation is not supported on static fields");
 						}
+						// WebService相关注解
 						currElements.add(new WebServiceRefElement(field, field, null));
 					}
 					else if (ejbRefClass != null && field.isAnnotationPresent(ejbRefClass)) {
 						if (Modifier.isStatic(field.getModifiers())) {
 							throw new IllegalStateException("@EJB annotation is not supported on static fields");
 						}
+						// Ejb相关注解
 						currElements.add(new EjbRefElement(field, field, null));
 					}
 					else if (field.isAnnotationPresent(Resource.class)) {
 						if (Modifier.isStatic(field.getModifiers())) {
 							throw new IllegalStateException("@Resource annotation is not supported on static fields");
 						}
+						// Resource注解
 						if (!ignoredResourceTypes.contains(field.getType().getName())) {
 							currElements.add(new ResourceElement(field, field, null));
 						}
@@ -384,6 +388,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 				}
 			});
 
+			// 扫描成员方法注解
 			ReflectionUtils.doWithLocalMethods(targetClass, new ReflectionUtils.MethodCallback() {
 				@Override
 				public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {

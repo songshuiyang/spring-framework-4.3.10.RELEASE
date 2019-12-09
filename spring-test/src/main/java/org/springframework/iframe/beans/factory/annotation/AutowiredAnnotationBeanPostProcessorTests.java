@@ -18,7 +18,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
     public void test1 () {
         AutowiredAnnotationBeanPostProcessor autowiredAnnotationBeanPostProcessor = new AutowiredAnnotationBeanPostProcessor();
 
-        InjectionMetadata injectionMetadata = autowiredAnnotationBeanPostProcessor.buildAutowiringMetadata(UserServiceImpl.class);
+        // InjectionMetadata injectionMetadata = autowiredAnnotationBeanPostProcessor.buildAutowiringMetadata(UserServiceImpl.class);
 
     }
 }

@@ -501,6 +501,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 创建Bean统一入口
 	 * Actually create the specified bean. Pre-creation processing has already happened
 	 * at this point, e.g. checking {@code postProcessBeforeInstantiation} callbacks.
 	 * <p>Differentiates between default bean instantiation, use of a
@@ -1330,7 +1331,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (hasInstAwareBpps || needsDepCheck) {
 			PropertyDescriptor[] filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
 			if (hasInstAwareBpps) {
-				// PropertyValue值设置后，Spring会调用getBeanPostProcessor方法遍历Bean工厂中注册的所有BeanPostProcessor
+				// PropertyValue值设置后，Spring会调用getBeanPostProcessor方法遍历Bean工厂中注册的所有InstantiationAwareBeanPostProcessor
 				// 其中就包括AutowiredAnnotationBeanPostProcessor @Autowired注解就是在这里完成的注入
 				for (BeanPostProcessor bp : getBeanPostProcessors()) {
 					if (bp instanceof InstantiationAwareBeanPostProcessor) {
@@ -1707,22 +1708,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 对特殊的bean处理 BeanNameAware、BeanClassLoaderAware、BeanFactoryAware
 			invokeAwareMethods(beanName, bean);
 		}
-
+		/**
+		 * 开始三步走：
+		 *
+		 */
 		Object wrappedBean = bean;
+		// 第一步： 执行BeanPostProcessor实例化后初始化前处理方法 org.springframework.beans.factory.config.BeanPostProcessor.postProcessBeforeInitialization
 		if (mbd == null || !mbd.isSynthetic()) {
-			// BeanPostProcessor实例化后初始化方法调用前处理方法
+			// 方法调用前处理方法
 			/**
-			 * 1、会调用下面这些 AwareInterfaces
-			 * 		* 比如熟悉的 EnvironmentAware ApplicationContextAware
+			 * 1、会调用下面这些 AwareInterfaces 比如熟悉的 EnvironmentAware ApplicationContextAware
 			 * @see org.springframework.context.support.ApplicationContextAwareProcessor#invokeAwareInterfaces(java.lang.Object)
-			 *
 			 * 2、TODO 其他的BeanPostProcessor还没发掘
 			 */
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
 		try {
-			// 激活用户自定义的init方法 1、InitializingBean接口afterPropertiesSet方法 2、bean 定义的init-method=""方法
+			// 第二步核心：激活用户自定义的init方法 1、InitializingBean接口afterPropertiesSet方法 2、bean 定义的init-method=""方法
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {
@@ -1730,9 +1733,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					(mbd != null ? mbd.getResourceDescription() : null),
 					beanName, "Invocation of init method failed", ex);
 		}
-
+		// 第三步： 执行BeanPostProcessor实例化后初始化后处理方法 org.springframework.beans.factory.config.BeanPostProcessor.postProcessAfterInitialization
 		if (mbd == null || !mbd.isSynthetic()) {
-			// BeanPostProcessor后置处理
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 		return wrappedBean;
