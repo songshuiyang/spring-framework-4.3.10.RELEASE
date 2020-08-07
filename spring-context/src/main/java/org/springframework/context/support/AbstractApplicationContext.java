@@ -1352,6 +1352,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	//---------------------------------------------------------------------
 
 	/**
+	 * Subclasses must implement this method to release their internal bean factory.
+	 * This method gets invoked by {@link #close()} after all other shutdown work.
+	 * <p>Should never throw an exception but rather log shutdown failures.
+	 */
+	protected abstract void closeBeanFactory();
+
+	/**
 	 * Subclasses must implement this method to perform the actual configuration load.
 	 * The method is invoked by {@link #refresh()} before any other initialization work.
 	 * <p>A subclass will either create a new bean factory and hold a reference to it,
@@ -1362,13 +1369,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * attempts are not supported
 	 */
 	protected abstract void refreshBeanFactory() throws BeansException, IllegalStateException;
-
-	/**
-	 * Subclasses must implement this method to release their internal bean factory.
-	 * This method gets invoked by {@link #close()} after all other shutdown work.
-	 * <p>Should never throw an exception but rather log shutdown failures.
-	 */
-	protected abstract void closeBeanFactory();
 
 	/**
 	 * Subclasses must return their internal bean factory here. They should implement the

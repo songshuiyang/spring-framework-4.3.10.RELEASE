@@ -91,6 +91,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/**
 	 * Cache of singleton factories: bean name --> ObjectFactory
 	 * 单例对象工厂的cache 三级缓存
+	 *
+	 * 将创建`Bean`的工厂类存放起来，这个工厂类里面就一个方法`T getObject()`
 	 * */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<String, ObjectFactory<?>>(16);
 
