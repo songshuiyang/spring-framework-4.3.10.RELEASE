@@ -8,10 +8,10 @@
                               http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-    <bean init-method="getAge" class="org.springframework.iframe.entity.IUser"></bean>
+    <bean class="org.springframework.iframe.entity.IUser"></bean>
 
     <!-- ComponentScanBeanDefinitionParser-->
-    <context:component-scan base-package = "org.springframework.iframe.service.*"/>
+    <context:component-scan base-package = "org.springframework.iframe.beans.initializing"/>
 
     <aop:aspectj-autoproxy/>
 
