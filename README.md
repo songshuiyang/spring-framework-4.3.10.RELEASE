@@ -22,6 +22,7 @@
 ## 问题记录
 * 执行`gradle`命令报错
     * 尝试更换版本，多下几个版本的`gradle`
+    * 腾讯云-版本：https://mirrors.cloud.tencent.com/gradle/
 
 * 执行`gradle`命令报`错误: 找不到或无法加载主类 org.gradle.wrapper.GradleWrapperMain`
     * 检查源码目录下是否有 `gradle/wrapper/gradle-wrapper.jar`，如果没有从其他项目中copy一份

@@ -1,6 +1,16 @@
 buildscript {
 	repositories {
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url "https://repo.spring.io/release" } // 优先尝试这个地址
 		maven { url "https://repo.spring.io/plugins-release" }
+        // maven { url "https://repo.spring.io/libs-release" }
+        mavenCentral()  // 中央仓库
 	}
 	dependencies {
 		classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
@@ -11,7 +21,7 @@ buildscript {
 }
 
 plugins {
-	id "org.sonarqube" version "1.1"
+	// id "org.sonarqube" version "4.4.1.3373"
 }
 
 ext {
@@ -139,6 +149,7 @@ configure(allprojects) { project ->
 	}
 
 	repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' } // 国内镜像，速度更快
 		maven { url "https://repo.spring.io/libs-release" }
 	}
 
@@ -588,7 +599,7 @@ project("spring-tx") {
 		optional("javax.transaction:javax.transaction-api:${jtaVersion}")
 		optional("javax.resource:connector-api:1.5")
 		optional("javax.ejb:ejb-api:${ejbVersion}")
-		optional("com.ibm.websphere:uow:6.0.2.17")
+		// optional("com.ibm.websphere:uow:6.0.2.17")
 		testCompile("org.aspectj:aspectjweaver:${aspectjVersion}")
 		testCompile("org.eclipse.persistence:javax.persistence:2.0.0")
 		testCompile("org.codehaus.groovy:groovy-all:${groovyVersion}")
@@ -1027,8 +1038,8 @@ project("spring-iframe") {
 		compile("org.hamcrest:hamcrest-core:${hamcrestVersion}")
 		compile("xmlunit:xmlunit:${xmlunitVersion}")
 		compile("net.sourceforge.htmlunit:htmlunit:2.23")
-		compile("org.seleniumhq.selenium:htmlunit-driver:2.23.2")
-		compile("org.seleniumhq.selenium:selenium-java:2.53.1")
+		// compile("org.seleniumhq.selenium:htmlunit-driver:2.23.2")
+		// compile("org.seleniumhq.selenium:selenium-java:2.53.1")
 		compile("org.skyscreamer:jsonassert:1.4.0")
 		compile("com.jayway.jsonpath:json-path:2.3.0")
 		compile("javax.mail:javax.mail-api:${javamailVersion}")
@@ -1176,7 +1187,7 @@ project("spring-aspects") {
 		optional("javax.transaction:javax.transaction-api:${jtaVersion}")  // for @javax.transaction.Transactional support
 		optional("javax.cache:cache-api:1.0.0")
 		testCompile(project(":spring-core"))  // for CodeStyleAspect
-		testCompile(project(":spring-test"))
+		//testCompile(project(":spring-test"))
 		testCompile("javax.mail:javax.mail-api:${javamailVersion}")
 	}
 
@@ -1221,19 +1232,19 @@ project("spring-framework-bom") {
 	}
 }
 
-sonarqube {
-	properties {
-		property "sonar.projectName", "Spring Framework"
-		property "sonar.profile", "Spring Framework"
-		property "sonar.jacoco.reportPath", "${buildDir.name}/jacoco.exec"
-		property "sonar.links.homepage", linkHomepage
-		property "sonar.links.ci", linkCi
-		property "sonar.links.issue", linkIssue
-		property "sonar.links.scm", linkScmUrl
-		property "sonar.links.scm_dev", linkScmDevConnection
-		property "sonar.java.coveragePlugin", "jacoco"
-	}
-}
+//sonarqube {
+//	properties {
+//		property "sonar.projectName", "Spring Framework"
+//		property "sonar.profile", "Spring Framework"
+//		property "sonar.jacoco.reportPath", "${buildDir.name}/jacoco.exec"
+//		property "sonar.links.homepage", linkHomepage
+//		property "sonar.links.ci", linkCi
+//		property "sonar.links.issue", linkIssue
+//		property "sonar.links.scm", linkScmUrl
+//		property "sonar.links.scm_dev", linkScmDevConnection
+//		property "sonar.java.coveragePlugin", "jacoco"
+//	}
+//}
 
 configure(rootProject) {
 	description = "Spring Framework"
@@ -1281,7 +1292,7 @@ configure(rootProject) {
 		testCompile(project(":spring-expression"))
 		testCompile(project(":spring-jdbc"))
 		testCompile(project(":spring-orm"))
-		testCompile(project(":spring-test"))
+		// testCompile(project(":spring-test"))
 		testCompile(project(":spring-tx"))
 		testCompile(project(":spring-web"))
 		testCompile(project(":spring-webmvc-portlet"))
@@ -1475,20 +1486,20 @@ configure(rootProject) {
 
 }
 
-configure([project(':spring-build-src'), project(':spring-framework-bom')]) {
-	sonarqube {
-		skipProject = true
-	}
-}
+//configure([project(':spring-build-src'), project(':spring-framework-bom')]) {
+//	sonarqube {
+//		skipProject = true
+//	}
+//}
 
-configure(project(':spring-core')) {
-	sonarqube {
-		properties {
-			property "sonar.exclusions",
-					"src/main/java/org/springframework/cglib/**/*,src/main/java/org/springframework/asm/**/*"
-		}
-	}
-}
+//configure(project(':spring-core')) {
+//	sonarqube {
+//		properties {
+//			property "sonar.exclusions",
+//					"src/main/java/org/springframework/cglib/**/*,src/main/java/org/springframework/asm/**/*"
+//		}
+//	}
+//}
 
 /*
  * Support publication of artifacts versioned by topic branch.

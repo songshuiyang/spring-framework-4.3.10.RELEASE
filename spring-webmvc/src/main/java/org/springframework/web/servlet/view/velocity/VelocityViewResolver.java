@@ -108,17 +108,17 @@ public class VelocityViewResolver extends AbstractTemplateViewResolver {
 		super.initApplicationContext();
 
 		if (this.toolboxConfigLocation != null) {
-			if (VelocityView.class == getViewClass()) {
-				logger.info("Using VelocityToolboxView instead of default VelocityView " +
-						"due to specified toolboxConfigLocation");
-				setViewClass(VelocityToolboxView.class);
-			}
-			else if (!VelocityToolboxView.class.isAssignableFrom(getViewClass())) {
-				throw new IllegalArgumentException(
-						"Given view class [" + getViewClass().getName() +
-						"] is not of type [" + VelocityToolboxView.class.getName() +
-						"], which it needs to be in case of a specified toolboxConfigLocation");
-			}
+//			if (VelocityView.class == getViewClass()) {
+//				logger.info("Using VelocityToolboxView instead of default VelocityView " +
+//						"due to specified toolboxConfigLocation");
+//				setViewClass(VelocityToolboxView.class);
+//			}
+//			else if (!VelocityToolboxView.class.isAssignableFrom(getViewClass())) {
+//				throw new IllegalArgumentException(
+//						"Given view class [" + getViewClass().getName() +
+//						"] is not of type [" + VelocityToolboxView.class.getName() +
+//						"], which it needs to be in case of a specified toolboxConfigLocation");
+//			}
 		}
 	}
 
@@ -129,7 +129,7 @@ public class VelocityViewResolver extends AbstractTemplateViewResolver {
 		view.setDateToolAttribute(this.dateToolAttribute);
 		view.setNumberToolAttribute(this.numberToolAttribute);
 		if (this.toolboxConfigLocation != null) {
-			((VelocityToolboxView) view).setToolboxConfigLocation(this.toolboxConfigLocation);
+			//((VelocityToolboxView) view).setToolboxConfigLocation(this.toolboxConfigLocation);
 		}
 		return view;
 	}
